@@ -35,6 +35,7 @@
         <activity android:name=".WeightEntryActivity" />
         <activity android:name=".TempEntryActivity" />
         <activity android:name=".MoodSelectionActivity" />
+        <activity android:name=".SwitchCupActivity" />
 
     </application>
 
