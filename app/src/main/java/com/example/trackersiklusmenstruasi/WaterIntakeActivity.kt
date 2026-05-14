@@ -1,8 +1,10 @@
 package com.example.trackersiklusmenstruasi
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackersiklusmenstruasi.databinding.ActivityWaterIntakeBinding
+import java.util.Locale
 
 class WaterIntakeActivity : AppCompatActivity() {
 
@@ -31,6 +33,7 @@ class WaterIntakeActivity : AppCompatActivity() {
         }
 
         binding.btnSettings.setOnClickListener {
+            // Biasanya pengaturan, tapi di sini diarahkan ke ganti gelas sesuai logika sebelumnya
             startActivity(Intent(this, SwitchCupActivity::class.java))
         }
         
@@ -40,9 +43,10 @@ class WaterIntakeActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        binding.tvCurrentIntake.text = currentIntake.toString()
-        // Format dengan ribuan separator
-        val targetText = String.format("%,d", targetIntake).replace(',', '.') + "ml"
+        // Format dengan ribuan separator titik
+        binding.tvCurrentIntake.text = String.format(Locale.GERMANY, "%,d", currentIntake)
+        
+        val targetText = String.format(Locale.GERMANY, "%,d", targetIntake) + "ml"
         binding.tvTargetIntake.text = targetText
         
         val progress = currentIntake.toFloat() / targetIntake
