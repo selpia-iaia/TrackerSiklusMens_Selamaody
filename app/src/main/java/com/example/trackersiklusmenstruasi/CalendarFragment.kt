@@ -32,6 +32,10 @@ class CalendarFragment : Fragment() {
         binding.btnEditPeriod.setOnClickListener {
             startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
         }
+
+        binding.btnSuntingSiklus.setOnClickListener {
+            startActivity(Intent(requireContext(), WaterIntakeActivity::class.java))
+        }
     }
 
     private fun displayUserInfo() {

@@ -36,6 +36,7 @@
         <activity android:name=".TempEntryActivity" />
         <activity android:name=".MoodSelectionActivity" />
         <activity android:name=".SwitchCupActivity" />
+        <activity android:name=".WaterIntakeActivity" />
 
     </application>
 

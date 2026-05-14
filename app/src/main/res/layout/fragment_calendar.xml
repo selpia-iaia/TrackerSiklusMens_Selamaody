@@ -135,11 +135,15 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/btnSuntingSiklus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
                         <FrameLayout
                             android:layout_width="40dp"
                             android:layout_height="40dp"

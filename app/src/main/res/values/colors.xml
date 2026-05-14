@@ -17,4 +17,9 @@
     <color name="blue_card">#D6E4FF</color>
     <color name="pink_card">#FFDEE4</color>
     <color name="nav_black">#222222</color>
+
+    <!-- Water Intake Colors -->
+    <color name="water_blue">#3DA9FF</color>
+    <color name="water_blue_bg">#F2F8FF</color>
+    <color name="water_progress_bg">#F0F0F0</color>
 </resources>
