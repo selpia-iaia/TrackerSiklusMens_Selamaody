@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="272dp"
+    android:height="64dp"
+    android:viewportWidth="272"
+    android:viewportHeight="64">
+    <!-- 4 circles joined by thin bridges -->
+    <!-- Centers: 32, 100, 168, 236 -->
+    <path
+        android:fillColor="@color/nav_black"
+        android:pathData="M32,0
+        A32,32 0 1,0 32,64
+        C45,64 55,42 66,42 L134,42
+        C145,42 155,64 168,64
+        A32,32 0 1,0 168,0
+        C155,0 145,22 134,22 L66,22
+        C55,22 45,0 32,0 Z" />
+    <path
+        android:fillColor="@color/nav_black"
+        android:pathData="M100,0
+        A32,32 0 1,0 100,64
+        A32,32 0 1,0 100,0 Z" />
+    <path
+        android:fillColor="@color/nav_black"
+        android:pathData="M236,0
+        A32,32 0 1,0 236,64
+        A32,32 0 1,0 236,0 Z" />
+    <!-- Connector bridges -->
+    <path
+        android:fillColor="@color/nav_black"
+        android:pathData="M32,20 L236,20 L236,44 L32,44 Z" />
+</vector>
