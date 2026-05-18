@@ -9,7 +9,11 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
 
     companion object {
         private const val DATABASE_NAME = "TrackerSiklus.db"
+<<<<<<< HEAD
         private const val DATABASE_VERSION = 6
+=======
+        private const val DATABASE_VERSION = 3
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
         @Volatile
         private var instance: DatabaseHelper? = null
@@ -43,14 +47,18 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
         const val COLUMN_MOODS = "moods"
         const val COLUMN_MEDICINE = "medicine"
         const val COLUMN_NOTE = "note"
+<<<<<<< HEAD
         const val COLUMN_WEIGHT_LOG = "weight_log"
         const val COLUMN_WATER_LOG = "water_log"
         const val COLUMN_TEMP_LOG = "temp_log"
+=======
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE $TABLE_USER ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_NAME TEXT, $COLUMN_BIRTHDAY TEXT, $COLUMN_WEIGHT REAL, $COLUMN_HEIGHT REAL, $COLUMN_PERIOD_LENGTH INTEGER, $COLUMN_CYCLE_LENGTH INTEGER, $COLUMN_LAST_PERIOD TEXT)")
         db?.execSQL("CREATE TABLE $TABLE_PERIODS ($COLUMN_PERIOD_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_START_DATE TEXT, $COLUMN_END_DATE TEXT)")
+<<<<<<< HEAD
         db?.execSQL("CREATE TABLE $TABLE_DAILY_LOGS ($COLUMN_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_LOG_DATE TEXT UNIQUE, $COLUMN_FLOW TEXT, $COLUMN_SYMPTOMS TEXT, $COLUMN_MOODS TEXT, $COLUMN_MEDICINE TEXT, $COLUMN_NOTE TEXT, $COLUMN_WEIGHT_LOG REAL, $COLUMN_WATER_LOG INTEGER, $COLUMN_TEMP_LOG REAL)")
 
         // Data Dummy
@@ -61,6 +69,12 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
         // Data Dummy Daily Logs
         db?.execSQL("INSERT INTO $TABLE_DAILY_LOGS ($COLUMN_LOG_DATE, $COLUMN_FLOW, $COLUMN_SYMPTOMS, $COLUMN_MOODS, $COLUMN_MEDICINE, $COLUMN_NOTE) VALUES ('2026-03-07', 'Heavy', 'Cramps', 'Mood Swings', 'Ibuprofen', 'Hari pertama cukup berat')")
         db?.execSQL("INSERT INTO $TABLE_DAILY_LOGS ($COLUMN_LOG_DATE, $COLUMN_FLOW, $COLUMN_SYMPTOMS, $COLUMN_MOODS, $COLUMN_MEDICINE, $COLUMN_NOTE) VALUES ('2026-03-08', 'Medium', 'Headache', 'Tired', 'None', 'Sudah mendingan')")
+=======
+        db?.execSQL("CREATE TABLE $TABLE_DAILY_LOGS ($COLUMN_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_LOG_DATE TEXT UNIQUE, $COLUMN_FLOW TEXT, $COLUMN_SYMPTOMS TEXT, $COLUMN_MOODS TEXT, $COLUMN_MEDICINE TEXT, $COLUMN_NOTE TEXT)")
+
+        // Data Dummy
+        db?.execSQL("INSERT INTO $TABLE_USER ($COLUMN_NAME, $COLUMN_BIRTHDAY, $COLUMN_WEIGHT, $COLUMN_HEIGHT, $COLUMN_PERIOD_LENGTH, $COLUMN_CYCLE_LENGTH, $COLUMN_LAST_PERIOD) VALUES ('Selpia Cantik', '2006-04-15', 57.0, 167.0, 5, 28, '2026-03-07')")
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -70,7 +84,11 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
         onCreate(db)
     }
 
+<<<<<<< HEAD
     fun saveDailyLog(date: String, flow: String?, symptoms: String?, moods: String?, medicine: String?, note: String?, weight: Double? = null, water: Int? = null, temp: Double? = null): Long {
+=======
+    fun saveDailyLog(date: String, flow: String?, symptoms: String?, moods: String?, medicine: String?, note: String?): Long {
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_LOG_DATE, date)
@@ -79,9 +97,12 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
             put(COLUMN_MOODS, moods)
             put(COLUMN_MEDICINE, medicine)
             put(COLUMN_NOTE, note)
+<<<<<<< HEAD
             weight?.let { put(COLUMN_WEIGHT_LOG, it) }
             water?.let { put(COLUMN_WATER_LOG, it) }
             temp?.let { put(COLUMN_TEMP_LOG, it) }
+=======
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
         }
         return db.insertWithOnConflict(TABLE_DAILY_LOGS, null, values, SQLiteDatabase.CONFLICT_REPLACE)
     }
@@ -119,6 +140,7 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
         }
         return db.insert(TABLE_USER, null, values)
     }
+<<<<<<< HEAD
 
     fun savePeriod(startDate: String, endDate: String): Long {
         val db = this.writableDatabase
@@ -189,6 +211,8 @@ class DatabaseHelper private constructor(context: Context) : SQLiteOpenHelper(co
             db.insert(TABLE_DAILY_LOGS, null, values)
         }
     }
+=======
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 }
 
 data class UserProfile(val id: Int, val name: String, val birthday: String, val weight: Double, val height: Double, val periodLength: Int, val cycleLength: Int, val lastPeriod: String)

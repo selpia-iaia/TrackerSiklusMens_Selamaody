@@ -166,6 +166,7 @@
                     android:orientation="horizontal"
                     android:paddingVertical="4dp">
                     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_pill_white" android:elevation="1dp" android:paddingHorizontal="16dp" android:paddingVertical="10dp" android:gravity="center_vertical">
+<<<<<<< HEAD
                         <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_sakit_kepala" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Kepala Sakit" android:textSize="12sp" android:textColor="@color/black" />
                     </LinearLayout>
@@ -176,6 +177,14 @@
                     <LinearLayout android:id="@+id/itemAddWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:background="@drawable/bg_pill_white" android:elevation="1dp" android:paddingHorizontal="16dp" android:paddingVertical="10dp" android:gravity="center_vertical" android:clickable="true" android:focusable="true">
                         <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/img_tambah_berat" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Tambah Berat" android:textSize="12sp" android:textColor="@color/black" />
+=======
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_user" app:tint="@color/pink_main" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Kepala Sakit" android:textSize="12sp" android:textColor="@color/black" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/itemAddWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:background="@drawable/bg_pill_white" android:elevation="1dp" android:paddingHorizontal="16dp" android:paddingVertical="10dp" android:gravity="center_vertical" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_plus" app:tint="@color/gray" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Tambahkan Berat" android:textSize="12sp" android:textColor="@color/black" />
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                     </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>

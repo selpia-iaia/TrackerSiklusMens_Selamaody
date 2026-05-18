@@ -5,12 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackersiklusmenstruasi.databinding.ItemCupPickerBinding
 
+<<<<<<< HEAD
 class CupAdapter(
     private val items: List<String>,
     private val onItemSelected: (String) -> Unit
 ) : RecyclerView.Adapter<CupAdapter.ViewHolder>() {
 
     private var selectedPosition = 2 // Default middle item
+=======
+class CupAdapter(private val items: List<String>) : RecyclerView.Adapter<CupAdapter.ViewHolder>() {
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
     class ViewHolder(val binding: ItemCupPickerBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -21,6 +25,7 @@ class CupAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.tvVolume.text = items[position]
+<<<<<<< HEAD
         
         // Normalize font for all items: Gray color and consistent size
         holder.binding.tvVolume.setTextColor(android.graphics.Color.parseColor("#A0A0A0"))
@@ -49,5 +54,10 @@ class CupAdapter(
 
     fun getSelectedItem(): String = items[selectedPosition]
 
+=======
+        // logic for scaling/color can be added here or in onScroll
+    }
+
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     override fun getItemCount(): Int = items.size
 }

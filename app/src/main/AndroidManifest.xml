@@ -37,7 +37,10 @@
         <activity android:name=".MoodSelectionActivity" />
         <activity android:name=".SwitchCupActivity" />
         <activity android:name=".WaterIntakeActivity" />
+<<<<<<< HEAD
         <activity android:name=".CycleHistoryActivity" />
+=======
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
     </application>
 

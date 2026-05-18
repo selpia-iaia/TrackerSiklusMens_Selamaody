@@ -35,9 +35,13 @@ class SwitchCupActivity : AppCompatActivity() {
 
     private fun setupCupPicker() {
         val cups = listOf("200ml", "250ml", "300ml", "350ml", "400ml", "450ml", "500ml")
+<<<<<<< HEAD
         val adapter = CupAdapter(cups) { selected ->
             // Optional: immediately update UI if needed
         }
+=======
+        val adapter = CupAdapter(cups)
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
         
         binding.rvCupPicker.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvCupPicker.adapter = adapter
@@ -46,6 +50,7 @@ class SwitchCupActivity : AppCompatActivity() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvCupPicker)
         
+<<<<<<< HEAD
         // Initial position
         binding.rvCupPicker.scrollToPosition(2)
 
@@ -57,5 +62,9 @@ class SwitchCupActivity : AppCompatActivity() {
             setResult(android.app.Activity.RESULT_OK, resultIntent)
             finish()
         }
+=======
+        // Optional: Scroll to middle item initially
+        binding.rvCupPicker.scrollToPosition(2)
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 }

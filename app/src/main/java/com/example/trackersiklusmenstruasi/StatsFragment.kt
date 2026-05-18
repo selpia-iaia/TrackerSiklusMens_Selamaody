@@ -1,10 +1,14 @@
 package com.example.trackersiklusmenstruasi
 
+<<<<<<< HEAD
 import android.graphics.Color
+=======
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+<<<<<<< HEAD
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -279,5 +283,15 @@ class StatsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+=======
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+
+class StatsFragment : Fragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_placeholder, container, false)
+        view.findViewById<TextView>(R.id.tvPlaceholder).text = "Stats & Analytics"
+        return view
+>>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 }
