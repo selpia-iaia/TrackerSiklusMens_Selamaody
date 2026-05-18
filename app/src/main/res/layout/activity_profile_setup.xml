@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Header Navigation -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_back_button"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toStartOf="@id/tvStepCount"
+        app:layout_constraintStart_toEndOf="@id/btnBack"
+        app:layout_constraintTop_toTopOf="@id/btnBack">
+
+        <View
+            android:id="@+id/step1"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:background="@drawable/bg_button_pink" />
+
+        <View
+            android:id="@+id/step2"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+
+        <View
+            android:id="@+id/step3"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+
+        <View
+            android:id="@+id/step4"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+
+        <View
+            android:id="@+id/step5"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+
+        <View
+            android:id="@+id/step6"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+
+        <View
+            android:id="@+id/step7"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="2dp"
+            android:alpha="0.1"
+            android:background="@color/pink_main" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvStepCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="1/7"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnContinue"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_button_pink"
+        android:text="Continue"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/pink_main"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
