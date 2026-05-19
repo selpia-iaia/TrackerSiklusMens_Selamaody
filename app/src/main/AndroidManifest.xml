@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TrackerSiklusMenstruasi">
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".MainActivity" />
+        <activity android:name=".OnboardingActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ProfileSetupActivity" />
+        <activity android:name=".LoadingActivity" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".OtpActivity" />
+        <activity android:name=".ProtectAccountActivity" />
+        <activity android:name=".SetupCompleteActivity" />
+        <activity android:name=".PhaseDetailActivity" />
+        <activity android:name=".EditPeriodActivity" />
+        <activity android:name=".LogEntryActivity" />
+        <activity android:name=".WeightEntryActivity" />
+        <activity android:name=".TempEntryActivity" />
+        <activity android:name=".MoodSelectionActivity" />
+        <activity android:name=".SwitchCupActivity" />
+        <activity android:name=".WaterIntakeActivity" />
+        <activity android:name=".CycleHistoryActivity" />
+        <activity android:name=".UnlockPremiumActivity" />
+        <activity android:name=".ChoosePaymentActivity" />
+        <activity android:name=".PaymentSuccessActivity" />
+
+    </application>
+
+</manifest>

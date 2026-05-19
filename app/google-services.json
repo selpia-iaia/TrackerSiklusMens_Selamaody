@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "997800362367",
+    "firebase_url": "https://menstruasi-tracker-default-rtdb.firebaseio.com",
+    "project_id": "menstruasi-tracker",
+    "storage_bucket": "menstruasi-tracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997800362367:android:96e998d54ac26e6dfb1a4a",
+        "android_client_info": {
+          "package_name": "com.example.trackersiklusmenstruasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHruo5r3_u5FPj_VE0QRVPyrIEdgV22e8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
