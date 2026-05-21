@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity() {
             setActiveNavItem(2)
         }
         binding.customBottomNav.root.findViewById<View>(R.id.btnNavProfile).setOnClickListener {
-            loadFragment(ProfileFragment())
-            setActiveNavItem(3)
+            // Membuka SettingsActivity yang baru dibuat daripada ProfileFragment
+            startActivity(android.content.Intent(this, SettingsActivity::class.java))
         }
     }
 

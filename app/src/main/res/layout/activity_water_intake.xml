@@ -70,10 +70,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-<<<<<<< HEAD
             android:id="@+id/ivDrop"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_drop"
@@ -81,33 +78,20 @@
             app:layout_constraintEnd_toEndOf="@id/waterGauge"
             app:layout_constraintStart_toStartOf="@id/waterGauge"
             app:layout_constraintTop_toTopOf="@id/waterGauge"
-<<<<<<< HEAD
             app:layout_constraintVertical_bias="0.45"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             app:tint="@color/water_blue" />
 
         <TextView
             android:id="@+id/tvCurrentIntake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
-=======
-            android:layout_marginTop="8dp"
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             android:text="1230"
             android:textColor="#FF5276"
             android:textSize="32sp"
             android:textStyle="bold"
-<<<<<<< HEAD
             app:layout_constraintEnd_toEndOf="@id/waterGauge"
             app:layout_constraintStart_toStartOf="@id/waterGauge"
             app:layout_constraintTop_toBottomOf="@id/ivDrop" />
-=======
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/waterGauge" />
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
         <TextView
             android:id="@+id/tvTargetIntake"
@@ -115,34 +99,20 @@
             android:layout_height="wrap_content"
             android:text="2,400ml"
             android:textColor="@color/gray"
-<<<<<<< HEAD
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/waterGauge"
             app:layout_constraintStart_toStartOf="@id/waterGauge"
-=======
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             app:layout_constraintTop_toBottomOf="@id/tvCurrentIntake" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginTop="8dp"
-=======
-            android:layout_marginTop="32dp"
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
             app:layout_constraintTop_toBottomOf="@id/waterGauge">
-=======
-            app:layout_constraintTop_toBottomOf="@id/tvTargetIntake">
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDrink"

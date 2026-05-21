@@ -66,25 +66,17 @@
                         android:gravity="center"
                         android:orientation="horizontal">
                         <ImageView
-<<<<<<< HEAD
                             android:id="@+id/btnPrevMonth"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_back"
                             app:tint="@color/gray"
                             android:background="@drawable/bg_circle_white"
-<<<<<<< HEAD
                             android:padding="8dp"
                             android:clickable="true"
                             android:focusable="true" />
                         <TextView
                             android:id="@+id/tvMonthYear"
-=======
-                            android:padding="8dp" />
-                        <TextView
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="32dp"
@@ -93,22 +85,15 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <ImageView
-<<<<<<< HEAD
                             android:id="@+id/btnNextMonth"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_next"
                             app:tint="@color/gray"
                             android:background="@drawable/bg_circle_white"
-<<<<<<< HEAD
                             android:padding="8dp"
                             android:clickable="true"
                             android:focusable="true" />
-=======
-                            android:padding="8dp" />
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                     </LinearLayout>
 
                     <GridLayout
@@ -204,10 +189,7 @@
                     android:textColor="@color/gray"
                     android:textSize="14sp" />
                 <TextView
-<<<<<<< HEAD
                     android:id="@+id/tvLikelihoodStatus"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"

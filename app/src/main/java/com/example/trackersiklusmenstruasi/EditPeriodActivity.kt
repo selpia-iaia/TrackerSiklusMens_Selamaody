@@ -5,16 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.TextView
-<<<<<<< HEAD
 import android.widget.Toast
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackersiklusmenstruasi.databinding.ActivityEditPeriodBinding
 import com.example.trackersiklusmenstruasi.databinding.ItemEditCalendarMonthBinding
-<<<<<<< HEAD
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,12 +23,6 @@ class EditPeriodActivity : AppCompatActivity() {
     
     // Store selections using key: "MONTH_YEAR" (e.g., "2_2026" for March 2026)
     private val monthSelections = mutableMapOf<String, MonthSelection>()
-=======
-
-class EditPeriodActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityEditPeriodBinding
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,24 +37,17 @@ class EditPeriodActivity : AppCompatActivity() {
         binding.rvCalendars.adapter = CalendarAdapter()
 
         binding.btnSave.setOnClickListener {
-<<<<<<< HEAD
             Toast.makeText(this, "Semua rentang periode berhasil disimpan!", Toast.LENGTH_SHORT).show()
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             finish()
         }
     }
 
     inner class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
-<<<<<<< HEAD
         private val baseCalendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, 2026)
             set(Calendar.MONTH, Calendar.MARCH)
         }
-=======
-        private val months = listOf("March 2026", "April 2026", "May 2026")
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
         inner class ViewHolder(val binding: ItemEditCalendarMonthBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -74,7 +57,6 @@ class EditPeriodActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-<<<<<<< HEAD
             val monthCal = baseCalendar.clone() as Calendar
             monthCal.add(Calendar.MONTH, position)
             
@@ -110,13 +92,6 @@ class EditPeriodActivity : AppCompatActivity() {
 
         private fun setupGrid(itemBinding: ItemEditCalendarMonthBinding, monthCal: Calendar, monthKey: String) {
             val grid = itemBinding.gridDays
-=======
-            holder.binding.tvMonthYear.text = months[position]
-            setupGrid(holder.binding.gridDays, position)
-        }
-
-        private fun setupGrid(grid: GridLayout, monthOffset: Int) {
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             grid.removeAllViews()
             val dayNames = listOf("S", "M", "T", "W", "T", "F", "S")
             
@@ -127,7 +102,6 @@ class EditPeriodActivity : AppCompatActivity() {
                 grid.addView(tv)
             }
 
-<<<<<<< HEAD
             val tempCal = monthCal.clone() as Calendar
             tempCal.set(Calendar.DAY_OF_MONTH, 1)
             val firstDayOffset = tempCal.get(Calendar.DAY_OF_WEEK) - 1
@@ -142,14 +116,10 @@ class EditPeriodActivity : AppCompatActivity() {
 
             val selection = monthSelections[monthKey] ?: MonthSelection()
 
-=======
-            val daysInMonth = 31
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             for (i in 1..daysInMonth) {
                 val tv = LayoutInflater.from(this@EditPeriodActivity).inflate(R.layout.item_calendar_grid_day, grid, false) as TextView
                 tv.text = i.toString()
                 
-<<<<<<< HEAD
                 // Highlight logic for the current month's selection
                 if (selection.startDay != -1 && selection.endDay != -1 && i in selection.startDay..selection.endDay) {
                     tv.setTextColor(resources.getColor(R.color.white, null))
@@ -180,32 +150,12 @@ class EditPeriodActivity : AppCompatActivity() {
                         saveMonthToDb(monthCal, selection)
                     }
                     notifyDataSetChanged()
-=======
-                if (monthOffset == 0 && i in 7..11) {
-                    tv.setTextColor(resources.getColor(R.color.white, null))
-                    when (i) {
-                        7 -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_start)
-                        11 -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_end)
-                        else -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_mid)
-                    }
-                }
-                
-                // Highlight for April (dummy)
-                if (monthOffset == 1 && i in 14..18) {
-                    tv.setTextColor(resources.getColor(R.color.white, null))
-                    when (i) {
-                        14 -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_start)
-                        18 -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_end)
-                        else -> tv.setBackgroundResource(R.drawable.bg_calendar_day_selected_mid)
-                    }
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 }
                 
                 grid.addView(tv)
             }
         }
 
-<<<<<<< HEAD
         private fun saveMonthToDb(monthCal: Calendar, selection: MonthSelection) {
             val dbHelper = DatabaseHelper.getInstance(this@EditPeriodActivity)
             val month = monthCal.get(Calendar.MONTH)
@@ -224,8 +174,5 @@ class EditPeriodActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int = 12 // Showing 1 year of months
-=======
-        override fun getItemCount(): Int = months.size
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 }

@@ -8,15 +8,9 @@
 
     <ImageView
         android:id="@+id/ivCup"
-<<<<<<< HEAD
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_glass"
-=======
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_drop"
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
         app:tint="#4D7FFF" />
 
     <TextView

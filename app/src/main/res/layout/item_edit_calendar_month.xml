@@ -30,54 +30,36 @@
                 android:textSize="16sp" />
 
             <ImageView
-<<<<<<< HEAD
                 android:id="@+id/btnPrevMonth"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_back"
                 android:rotation="90"
-<<<<<<< HEAD
                 android:clickable="true"
                 android:focusable="true"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 app:tint="@color/gray" />
 
             <View android:layout_width="16dp" android:layout_height="0dp" />
 
             <ImageView
-<<<<<<< HEAD
                 android:id="@+id/btnResetMonth"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_back"
                 android:clickable="true"
                 android:focusable="true"
-=======
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_back"
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 app:tint="@color/gray" />
 
             <View android:layout_width="16dp" android:layout_height="0dp" />
 
             <ImageView
-<<<<<<< HEAD
                 android:id="@+id/btnNextMonth"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_back"
                 android:rotation="180"
-<<<<<<< HEAD
                 android:clickable="true"
                 android:focusable="true"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
                 app:tint="@color/gray" />
         </LinearLayout>
 

@@ -10,12 +10,17 @@
         android:theme="@style/Theme.TrackerSiklusMenstruasi">
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".SettingsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
         </activity>
 
         <activity android:name=".MainActivity" />
@@ -37,10 +42,10 @@
         <activity android:name=".MoodSelectionActivity" />
         <activity android:name=".SwitchCupActivity" />
         <activity android:name=".WaterIntakeActivity" />
-<<<<<<< HEAD
         <activity android:name=".CycleHistoryActivity" />
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
+        <activity android:name=".UnlockPremiumActivity" />
+        <activity android:name=".ChoosePaymentActivity" />
+        <activity android:name=".PaymentSuccessActivity" />
 
     </application>
 

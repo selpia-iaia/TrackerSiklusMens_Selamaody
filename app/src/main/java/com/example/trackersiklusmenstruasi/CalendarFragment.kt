@@ -8,18 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.trackersiklusmenstruasi.databinding.FragmentCalendarBinding
-<<<<<<< HEAD
 import java.text.SimpleDateFormat
 import java.util.*
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
 class CalendarFragment : Fragment() {
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
-<<<<<<< HEAD
     // State for selected date and currently displayed month
     private var selectedDay = 11
     private var currentCalendar = Calendar.getInstance().apply {
@@ -27,8 +23,6 @@ class CalendarFragment : Fragment() {
         set(Calendar.MONTH, Calendar.MARCH)
     }
 
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,11 +36,7 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         displayUserInfo()
-<<<<<<< HEAD
         updateCalendarUI()
-=======
-        setupGrid()
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
 
         binding.btnEditPeriod.setOnClickListener {
             startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
@@ -55,7 +45,6 @@ class CalendarFragment : Fragment() {
         binding.btnSuntingSiklus.setOnClickListener {
             startActivity(Intent(requireContext(), WaterIntakeActivity::class.java))
         }
-<<<<<<< HEAD
 
         // Navigation between months
         binding.btnPrevMonth.setOnClickListener {
@@ -174,8 +163,6 @@ class CalendarFragment : Fragment() {
             } catch (e: Exception) {}
         }
         binding.tvCycleDay.text = "Bukan masa siklus"
-=======
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
     }
 
     private fun displayUserInfo() {
@@ -198,7 +185,6 @@ class CalendarFragment : Fragment() {
             grid.addView(tv)
         }
 
-<<<<<<< HEAD
         // Get info for the current month
         val tempCal = currentCalendar.clone() as Calendar
         tempCal.set(Calendar.DAY_OF_MONTH, 1)
@@ -229,14 +215,10 @@ class CalendarFragment : Fragment() {
             grid.addView(tv)
         }
 
-=======
-        val daysInMonth = 30
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
         for (i in 1..daysInMonth) {
             val tv = LayoutInflater.from(requireContext()).inflate(R.layout.item_calendar_grid_day, grid, false) as TextView
             tv.text = i.toString()
             
-<<<<<<< HEAD
             // Priority highlighting
             if (i == selectedDay) {
                 // Pink circle for selected day (active/moving)
@@ -250,15 +232,6 @@ class CalendarFragment : Fragment() {
             tv.setOnClickListener {
                 selectedDay = i
                 updateCalendarUI()
-=======
-            // Match screenshot 37: Highlight for March 11
-            if (i == 11) {
-                tv.setBackgroundResource(R.drawable.bg_button_pink)
-                tv.setTextColor(resources.getColor(R.color.white, null))
-                
-                // Add a small white dot inside the pink circle
-                // We could use a specific drawable for this if needed
->>>>>>> f18d1391228f4e01f19254cbf5262f1ef836cbba
             }
             
             grid.addView(tv)
