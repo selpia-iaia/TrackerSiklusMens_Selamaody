@@ -15,6 +15,11 @@ class CycleProgressView @JvmOverloads constructor(
     private val lightGrayColor = Color.parseColor("#F5F5F5")
     private val whiteColor = Color.WHITE
 
+    fun setProgress(newProgress: Float) {
+        progress = newProgress.coerceIn(0f, 1f)
+        invalidate()
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
