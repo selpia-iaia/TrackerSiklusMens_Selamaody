@@ -34,8 +34,8 @@ class CycleHistoryActivity : AppCompatActivity() {
         val dbHelper = DatabaseHelper.getInstance(this)
         val profile = dbHelper.getUserProfile()
         profile?.let {
-            binding.tvAvgPeriod.text = "${it.periodLength} Hari"
-            binding.tvAvgCycle.text = "${it.cycleLength} Hari"
+            binding.tvAvgPeriod.text = "${it.period_length} Hari"
+            binding.tvAvgCycle.text = "${it.cycle_length} Hari"
         }
         
         // Match UI from image: if profile is null, show defaults

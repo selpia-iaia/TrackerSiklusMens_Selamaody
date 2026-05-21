@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDF7F8">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_white"
+            android:elevation="2dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/black"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Akun &amp; Keamanan"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Switches -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Akses Biometrik" android:textColor="@color/black" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:checked="false" app:thumbTint="@color/pink_main" app:trackTint="@color/pink_card"/>
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Akses Wajah" android:textColor="@color/black" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:checked="false" app:thumbTint="@color/pink_main" app:trackTint="@color/pink_card"/>
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Masuk Kode SMS" android:textColor="@color/black" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:checked="false" app:thumbTint="@color/pink_main" app:trackTint="@color/pink_card"/>
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kode Keamanan Google" android:textColor="@color/black" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:checked="false" app:thumbTint="@color/pink_main" app:trackTint="@color/pink_card"/>
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <!-- Navigation Items -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Edit Password" android:textColor="@color/black" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toStartOf="@+id/ivNext1" android:layout_alignParentStart="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kelola Perangkat" android:textColor="@color/black" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jeda akun Anda sekarang dan aktifkan kembali kapan pun Anda mau." android:textColor="@color/gray" android:textSize="12sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <ImageView android:id="@+id/ivNext1" android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toStartOf="@+id/ivNext2" android:layout_alignParentStart="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nonaktifkan Akun" android:textColor="@color/black" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hapus akun Anda secara selamanya. Mohon konfirmasi sebelum melanjutkan." android:textColor="@color/gray" android:textSize="12sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <ImageView android:id="@+id/ivNext2" android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                </RelativeLayout>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toStartOf="@+id/ivNext3" android:layout_alignParentStart="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hapus Akun" android:textColor="@color/pink_main" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Akun dan data Anda akan dihapus secara permanen. Lanjutkan dengan hati-hati." android:textColor="@color/gray" android:textSize="12sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <ImageView android:id="@+id/ivNext3" android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

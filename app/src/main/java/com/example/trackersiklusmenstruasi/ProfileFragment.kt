@@ -30,12 +30,41 @@ class ProfileFragment : Fragment() {
         
         loadUserProfile()
         
+        binding.tvProfileName.setOnClickListener {
+            startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
+        }
+
+        binding.ivProfilePicture.setOnClickListener {
+            startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
+        }
+
         binding.btnLogout.setOnClickListener {
+            // Show the logout dialog we created
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_logout, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext(), R.style.Theme_TrackerSiklusMenstruasi)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogView.findViewById<android.view.View>(R.id.btnCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<android.view.View>(R.id.btnLogout).setOnClickListener {
+            dialog.dismiss()
             SessionManager(requireContext()).logout()
-            val intent = Intent(requireContext(), OnboardingActivity::class.java)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+
+        dialog.show()
     }
 
     private fun loadUserProfile() {
@@ -46,8 +75,8 @@ class ProfileFragment : Fragment() {
             binding.tvProfileName.text = it.name
             binding.tvWeight.text = "${it.weight.toInt()} Kg"
             binding.tvHeight.text = "${it.height.toInt()} Cm"
-            binding.tvPeriodLen.text = "${it.periodLength} Hari"
-            binding.tvCycleLen.text = "${it.cycleLength} Hari"
+            binding.tvPeriodLen.text = "${it.period_length} Hari"
+            binding.tvCycleLen.text = "${it.cycle_length} Hari"
             
             // Calculate age from birthday (yyyy-MM-dd)
             try {
