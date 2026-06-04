@@ -136,7 +136,7 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Section 2: Physical & BMI -->
-             <androidx.cardview.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -152,8 +152,8 @@
                     <RelativeLayout android:id="@+id/rowWeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Berat Badan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="57 Kg" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="57 Kg" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
@@ -161,8 +161,8 @@
                     <RelativeLayout android:id="@+id/rowHeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tinggi Badan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="167 Cm" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="167 Cm" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
@@ -198,8 +198,8 @@
                     <RelativeLayout android:id="@+id/rowWeekStart" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pekan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValWeekStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Senin" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValWeekStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Senin" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
@@ -207,8 +207,8 @@
                     <RelativeLayout android:id="@+id/rowTimeFormat" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pengaturan Waktu" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValTimeFormat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Default" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValTimeFormat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Default" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
@@ -216,8 +216,8 @@
                     <RelativeLayout android:id="@+id/rowDayStart" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Waktu Mulai Hari" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValDayStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00 AM" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValDayStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00 AM" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
@@ -246,8 +246,8 @@
                     <RelativeLayout android:id="@+id/rowClearCache" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kosongkan Cache" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValCache" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="30.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValCache" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="30.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
@@ -271,8 +271,8 @@
                     <RelativeLayout android:id="@+id/rowWaterTarget" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Target Air" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValWaterTarget" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValWaterTarget" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
@@ -280,8 +280,8 @@
                     <RelativeLayout android:id="@+id/rowCupVolume" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Volume Cup" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                             <TextView android:id="@+id/tvValCupVolume" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ml" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                             <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                            <TextView android:id="@+id/tvValCupVolume" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ml" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>

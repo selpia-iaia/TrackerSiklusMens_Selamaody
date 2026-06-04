@@ -39,11 +39,6 @@ class CycleProgressView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setProgress(newProgress: Float) {
-        progress = newProgress.coerceIn(0f, 1f)
-        invalidate()
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 

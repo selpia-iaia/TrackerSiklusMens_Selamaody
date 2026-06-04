@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
         val nav = binding.customBottomNav.root
         nav.findViewById<View>(R.id.vNavBgProfile).setBackgroundResource(R.drawable.bg_circle_pink)
         nav.findViewById<ImageView>(R.id.ivNavProfile).setColorFilter(Color.WHITE)
-        
+
         nav.findViewById<View>(R.id.vNavBgHome).setBackgroundResource(R.drawable.bg_circle_white)
         nav.findViewById<ImageView>(R.id.ivNavHome).setColorFilter(Color.BLACK)
         nav.findViewById<View>(R.id.vNavBgCalendar).setBackgroundResource(R.drawable.bg_circle_white)

@@ -15,26 +15,17 @@
         android:usesCleartextTraffic="true">
 
         <activity
-<<<<<<< HEAD
-            android:name=".SettingsActivity"
-            android:exported="false">
-=======
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
->>>>>>> ee028d06e1666f0c9ee74c3ef5af345719b31285
         </activity>
 
         <activity
             android:name=".SettingsActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".MainActivity" />
