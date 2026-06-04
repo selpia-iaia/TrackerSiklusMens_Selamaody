@@ -2,278 +2,242 @@ package com.example.trackersiklusmenstruasi
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.trackersiklusmenstruasi.databinding.FragmentStatsBinding
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class StatsFragment : Fragment() {
+
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dbHelper: DatabaseHelper
-    private var currentMonthOffset = 0
-    private var weightChartType = HealthChartView.ChartType.BAR
-    private var waterChartType = HealthChartView.ChartType.BAR
-    private var tempChartType = HealthChartView.ChartType.BAR
 
-    // Simulasi data jumlah klik (log)
-    private val logCounts = mutableMapOf(
-        "Rendah" to 39, "Normal" to 21, "Tinggi" to 15, "Tinggi Sekali" to 5,
-        "Kepala Sakit" to 142, "Tambahkan Berat" to 10, "Pegal" to 8,
-        "Normal_Mood" to 111, "Kesal" to 125, "Senang" to 45, "Sedih" to 30, "Bosan" to 12,
-        "Pil Obat" to 123, "Kasa" to 100, "Obat Penghilang" to 15
-    )
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dbHelper = DatabaseHelper.getInstance(requireContext())
-        setupDynamicItems()
-        loadExistingNote()
+
         setupTabs()
-        setupChartControls()
-        updateHealthData()
-        
+        setupHealthCharts()
+        setupLogIcons()
+        setupClickListeners()
+        loadTodayNote()
+        loadSummaryData()
+    }
+
+    private fun loadSummaryData() {
+        val dbHelper = DatabaseHelper.getInstance(requireContext())
+        val profile = dbHelper.getUserProfile()
+        profile?.let {
+            binding.tvAvgPeriodStats.text = "${it.period_length} Hari"
+            binding.tvAvgCycleStats.text = "${it.cycle_length} Hari"
+        }
+    }
+
+    private fun setupClickListeners() {
         binding.btnMenu.setOnClickListener {
-            Toast.makeText(requireContext(), "Menu diklik", Toast.LENGTH_SHORT).show()
+            val popup = android.widget.PopupMenu(requireContext(), it)
+            popup.menu.add("Data Pribadi")
+            popup.menu.add("Pengaturan")
+            popup.menu.add("Tips Kesehatan")
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.title) {
+                    "Data Pribadi" -> {
+                        startActivity(android.content.Intent(requireContext(), PersonalDataActivity::class.java))
+                        true
+                    }
+                    "Pengaturan" -> {
+                        startActivity(android.content.Intent(requireContext(), SettingsActivity::class.java))
+                        true
+                    }
+                    "Tips Kesehatan" -> {
+                        startActivity(android.content.Intent(requireContext(), HealthTipsActivity::class.java))
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
         }
 
         binding.btnSaveNote.setOnClickListener {
             saveNote()
         }
 
-        // Connect to Cycle History (Siklus Saya)
-        binding.containerLogCount.getChildAt(0).setOnClickListener {
-            val intent = android.content.Intent(requireContext(), CycleHistoryActivity::class.java)
-            startActivity(intent)
+        binding.btnMyCycle.setOnClickListener {
+            startActivity(android.content.Intent(requireContext(), CycleHistoryActivity::class.java))
         }
     }
 
-    private fun setupTabs() {
-        binding.tabLogCount.setOnClickListener {
-            switchTab(true)
-        }
-        binding.tabHealth.setOnClickListener {
-            switchTab(false)
-        }
-    }
-
-    private fun switchTab(isLogCount: Boolean) {
-        binding.containerLogCount.visibility = if (isLogCount) View.VISIBLE else View.GONE
-        binding.containerHealth.visibility = if (isLogCount) View.GONE else View.VISIBLE
+    private fun loadTodayNote() {
+        val dbHelper = DatabaseHelper.getInstance(requireContext())
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val today = sdf.format(java.util.Date())
         
-        binding.tvTabLogCount.setTextColor(resources.getColor(if (isLogCount) R.color.pink_main else R.color.gray, null))
-        binding.indicatorLogCount.setBackgroundColor(resources.getColor(if (isLogCount) R.color.pink_main else R.color.stroke, null))
-        binding.tvTabLogCount.setTypeface(null, if (isLogCount) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL)
-
-        binding.tvTabHealth.setTextColor(resources.getColor(if (!isLogCount) R.color.pink_main else R.color.gray, null))
-        binding.indicatorHealth.setBackgroundColor(resources.getColor(if (!isLogCount) R.color.pink_main else R.color.stroke, null))
-        binding.tvTabHealth.setTypeface(null, if (!isLogCount) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL)
-    }
-
-    private fun setupChartControls() {
-        // Shared date navigation for health tab
-        val nextBtn = binding.containerHealth.findViewById<View>(R.id.btnNextMonth)
-        val prevBtn = binding.containerHealth.findViewById<View>(R.id.btnPrevMonth)
-        
-        nextBtn.setOnClickListener { 
-            currentMonthOffset++
-            updateHealthData()
+        // Cek log hari ini
+        val logs = dbHelper.getAllDailyLogs()
+        val todayLog = logs.find { it.date == today }
+        todayLog?.let {
+            binding.etStatsNote.setText(it.note)
         }
-        prevBtn.setOnClickListener { 
-            currentMonthOffset--
-            updateHealthData()
-        }
-
-        // Toggle Buttons
-        binding.btnWeightBar.setOnClickListener { weightChartType = HealthChartView.ChartType.BAR; updateHealthData() }
-        binding.btnWeightLine.setOnClickListener { weightChartType = HealthChartView.ChartType.LINE; updateHealthData() }
-        binding.btnWaterBar.setOnClickListener { waterChartType = HealthChartView.ChartType.BAR; updateHealthData() }
-        binding.btnWaterLine.setOnClickListener { waterChartType = HealthChartView.ChartType.LINE; updateHealthData() }
-        binding.btnTempBar.setOnClickListener { tempChartType = HealthChartView.ChartType.BAR; updateHealthData() }
-        binding.btnTempLine.setOnClickListener { tempChartType = HealthChartView.ChartType.LINE; updateHealthData() }
-    }
-
-    private fun updateHealthData() {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MONTH, currentMonthOffset)
-        
-        val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-        val dateRangeStr = monthYearFormat.format(calendar.time)
-        binding.containerHealth.findViewById<TextView>(R.id.tvChartDateRange).text = dateRangeStr
-
-        // Mock data for charts (In real app, fetch from db using date range)
-        val weightData = listOf(50f, 52f, 51f, 55f, 53f, 54f, 52f)
-        val waterData = listOf(1200f, 1540f, 1300f, 1600f, 1100f, 1400f, 1500f)
-        val tempData = listOf(36.5f, 36.8f, 37.2f, 36.6f, 36.9f, 37.0f, 36.7f)
-
-        binding.weightChart.setData(weightData, 70f, Color.parseColor("#3DDC84"), weightChartType)
-        binding.waterChart.setData(waterData, 2000f, Color.parseColor("#3DA9FF"), waterChartType)
-        binding.tempChart.setData(tempData, 40f, Color.parseColor("#FF5C7A"), tempChartType)
-
-        // BMI logic
-        val user = dbHelper.getUserProfile()
-        user?.let {
-            val weight = it.weight
-            val heightM = it.height / 100
-            val bmi = (weight / (heightM * heightM)).toFloat()
-            binding.bmiGauge.setBMI(bmi)
-            binding.tvBMICategory.text = getBMICategory(bmi)
-        }
-    }
-
-    private fun getBMICategory(bmi: Float): String = when {
-        bmi < 17.0f -> "Sangat Kurus"
-        bmi < 18.5f -> "Kurus"
-        bmi < 25.0f -> "Normal"
-        bmi < 27.0f -> "Berlebih"
-        else -> "Obesitas"
-    }
-
-    private fun loadExistingNote() {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = sdf.format(Date())
-        
-        val db = dbHelper.readableDatabase
-        val cursor = db.query(
-            DatabaseHelper.TABLE_DAILY_LOGS,
-            arrayOf(DatabaseHelper.COLUMN_NOTE),
-            "${DatabaseHelper.COLUMN_LOG_DATE} = ?",
-            arrayOf(currentDate),
-            null, null, null
-        )
-        
-        if (cursor.moveToFirst()) {
-            val existingNote = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NOTE))
-            binding.etStatsNote.setText(existingNote)
-        }
-        cursor.close()
     }
 
     private fun saveNote() {
-        val noteText = binding.etStatsNote.text.toString().trim()
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = sdf.format(Date())
+        val note = binding.etStatsNote.text.toString()
+        if (note.isEmpty()) {
+            android.widget.Toast.makeText(requireContext(), "Catatan tidak boleh kosong", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        val result = dbHelper.saveDailyLog(
-            currentDate,
-            null,
-            null,
-            null,
-            null,
-            noteText
+        val dbHelper = DatabaseHelper.getInstance(requireContext())
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val today = sdf.format(java.util.Date())
+
+        // Ambil log yang sudah ada atau buat baru
+        val logs = dbHelper.getAllDailyLogs()
+        val existingLog = logs.find { it.date == today }
+
+        dbHelper.saveDailyLog(
+            today,
+            existingLog?.flow ?: "Normal",
+            existingLog?.symptoms ?: "",
+            existingLog?.moods ?: "",
+            existingLog?.medicine ?: "",
+            note,
+            existingLog?.weight,
+            existingLog?.water,
+            existingLog?.temp
         )
 
-        if (result != -1L) {
-            Toast.makeText(requireContext(), "Catatan berhasil disimpan!", Toast.LENGTH_SHORT).show()
+        android.widget.Toast.makeText(requireContext(), "Catatan berhasil disimpan!", android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupTabs() {
+        binding.tabLogCount.setOnClickListener { showTabContent(true) }
+        binding.tabHealth.setOnClickListener { showTabContent(false) }
+        
+        // Default ke "Jumlah Log" sesuai tampilan yang diinginkan user
+        showTabContent(true)
+    }
+
+    private fun showTabContent(isLogCount: Boolean) {
+        if (isLogCount) {
+            binding.containerLogCount.visibility = View.VISIBLE
+            binding.containerHealth.visibility = View.GONE
+            
+            binding.tvTabLogCount.setTextColor(resources.getColor(R.color.pink_main, null))
+            binding.tvTabLogCount.paint.isFakeBoldText = true
+            binding.indicatorLogCount.visibility = View.VISIBLE
+            
+            binding.tvTabHealth.setTextColor(Color.GRAY)
+            binding.tvTabHealth.paint.isFakeBoldText = false
+            binding.indicatorHealth.visibility = View.INVISIBLE
         } else {
-            Toast.makeText(requireContext(), "Gagal menyimpan catatan", Toast.LENGTH_SHORT).show()
+            binding.containerLogCount.visibility = View.GONE
+            binding.containerHealth.visibility = View.VISIBLE
+            
+            binding.tvTabHealth.setTextColor(resources.getColor(R.color.pink_main, null))
+            binding.tvTabHealth.paint.isFakeBoldText = true
+            binding.indicatorHealth.visibility = View.VISIBLE
+            
+            binding.tvTabLogCount.setTextColor(Color.GRAY)
+            binding.tvTabLogCount.paint.isFakeBoldText = false
+            binding.indicatorLogCount.visibility = View.INVISIBLE
         }
     }
 
-    private fun setupDynamicItems() {
-        // 1. Aliran Darah
-        val flowContainer = binding.flowContainer
-        flowContainer.removeAllViews()
-        addPillItem(flowContainer, "Rendah", R.drawable.ic_drop, true)
-        addPillItem(flowContainer, "Normal", R.drawable.ic_drop, true)
-        addPillItem(flowContainer, "Tinggi", R.drawable.ic_drop, true)
-        addPillItem(flowContainer, "Tinggi Sekali", R.drawable.ic_drop, true)
+    private fun setupHealthCharts() {
+        // Data Dummy untuk Grafik Berat
+        val weightData = listOf(48f, 49f, 52f, 50f, 48f, 51f, 49f)
+        binding.weightChart.setData(weightData, 60f, Color.parseColor("#81C784"), HealthChartView.ChartType.BAR)
 
-        // 2. Gejala (Menggunakan foto ilustrasi baru)
-        val symptomsContainer = binding.symptomsContainer
-        symptomsContainer.removeAllViews()
-        
-        // Menggunakan drawable yang benar untuk gejala
-        addPillItem(symptomsContainer, "Kepala Sakit", R.drawable.img_sakit_kepala, false)
-        addPillItem(symptomsContainer, "Tambahkan Berat", R.drawable.img_tambah_berat, false)
-        addPillItem(symptomsContainer, "Pegal", R.drawable.img_pegal, false)
+        // BMI Gauge
+        binding.bmiGauge.setBMI(19.0f)
+        binding.tvBMICategory.text = "Normal"
 
-        // 3. Mood
-        val moodContainer = binding.moodContainer
-        moodContainer.removeAllViews()
-        addMoodItem(moodContainer, "Normal", "😊")
-        addMoodItem(moodContainer, "Kesal", "😡")
-        addMoodItem(moodContainer, "Senang", "😄")
-        addMoodItem(moodContainer, "Sedih", "😢")
-        addMoodItem(moodContainer, "Bosan", "😑")
+        // Data Dummy untuk Air
+        val waterData = listOf(1200f, 1500f, 1800f, 1540f, 1300f, 1600f, 1400f)
+        binding.waterChart.setData(waterData, 2000f, Color.parseColor("#4FC3F7"), HealthChartView.ChartType.BAR)
 
-        // 4. Obat
-        val medicineContainer = binding.medicineContainer
-        medicineContainer.removeAllViews()
-        addPillItem(medicineContainer, "Pil Obat", R.drawable.ic_onboarding_drop, true, R.color.water_blue)
-        addPillItem(medicineContainer, "Kasa", R.drawable.ic_onboarding_uterus, true, R.color.pink_main)
-        addPillItem(medicineContainer, "Obat Penghilang", R.drawable.ic_onboarding_drop, true, R.color.google_blue)
+        // Data Dummy untuk Suhu
+        val tempData = listOf(36.2f, 36.5f, 36.8f, 34.5f, 36.6f, 37.0f, 36.4f)
+        binding.tempChart.setData(tempData, 40f, Color.parseColor("#FF8A65"), HealthChartView.ChartType.BAR)
+
+        // Setup Chart Switchers (Bar vs Line)
+        setupChartSwitchers()
     }
 
-    private fun addPillItem(container: LinearLayout?, label: String, iconRes: Int, isSmall: Boolean, tintColor: Int? = null) {
-        val layoutRes = if (isSmall) R.layout.item_stats_pill else R.layout.item_stats_pill_large
-        val view = layoutInflater.inflate(layoutRes, container, false)
-        val tv = view.findViewById<TextView>(R.id.tvLabel)
-        val iv = view.findViewById<ImageView>(R.id.ivIcon)
-        
-        val count = logCounts[label] ?: 0
-        tv.text = "$label(${count}x)"
-        iv.setImageResource(iconRes)
+    private fun setupChartSwitchers() {
+        // Berat
+        binding.btnWeightBar.setOnClickListener { updateChartType(binding.weightChart, HealthChartView.ChartType.BAR, it, binding.btnWeightLine) }
+        binding.btnWeightLine.setOnClickListener { updateChartType(binding.weightChart, HealthChartView.ChartType.LINE, it, binding.btnWeightBar) }
 
-        // Jangan gunakan tint untuk ilustrasi gejala (Kepala Sakit, Berat, Pegal)
-        val isIllustration = label.contains("Kepala Sakit") || label.contains("Tambahkan Berat") || label.contains("Pegal")
-        if (!isIllustration) {
-            tintColor?.let { iv.setColorFilter(resources.getColor(it, null)) }
-            if (tintColor == null && isSmall) {
-                iv.setColorFilter(resources.getColor(R.color.pink_main, null))
+        // Air
+        binding.btnWaterBar.setOnClickListener { updateChartType(binding.waterChart, HealthChartView.ChartType.BAR, it, binding.btnWaterLine) }
+        binding.btnWaterLine.setOnClickListener { updateChartType(binding.waterChart, HealthChartView.ChartType.LINE, it, binding.btnWaterBar) }
+
+        // Suhu
+        binding.btnTempBar.setOnClickListener { updateChartType(binding.tempChart, HealthChartView.ChartType.BAR, it, binding.btnTempLine) }
+        binding.btnTempLine.setOnClickListener { updateChartType(binding.tempChart, HealthChartView.ChartType.LINE, it, binding.btnTempBar) }
+    }
+
+    private fun updateChartType(chart: HealthChartView, type: HealthChartView.ChartType, activeBtn: View, inactiveBtn: View) {
+        // Logika sederhana ganti tampilan grafik
+        // Data tetap sama, cuma tipe yang berubah
+        val currentData = when(chart.id) {
+            R.id.weightChart -> listOf(48f, 49f, 52f, 50f, 48f, 51f, 49f)
+            R.id.waterChart -> listOf(1200f, 1500f, 1800f, 1540f, 1300f, 1600f, 1400f)
+            else -> listOf(36.2f, 36.5f, 36.8f, 34.5f, 36.6f, 37.0f, 36.4f)
+        }
+        val color = when(chart.id) {
+            R.id.weightChart -> Color.parseColor("#81C784")
+            R.id.waterChart -> Color.parseColor("#4FC3F7")
+            else -> Color.parseColor("#FF8A65")
+        }
+        val max = if (chart.id == R.id.tempChart) 40f else if (chart.id == R.id.waterChart) 2000f else 60f
+        
+        chart.setData(currentData, max, color, type)
+        
+        activeBtn.setBackgroundResource(R.drawable.bg_circle_pink)
+        (activeBtn as ImageView).setColorFilter(Color.WHITE)
+        
+        inactiveBtn.setBackgroundResource(R.drawable.bg_circle_white)
+        (inactiveBtn as ImageView).setColorFilter(Color.GRAY)
+    }
+
+    private fun setupLogIcons() {
+        // Mengisi ikon-ikon di tab "Jumlah Log" agar tidak kosong
+        addIconToContainer(binding.flowContainer, "🩸")
+        addIconToContainer(binding.symptomsContainer, "🤕", "🤢", "😴")
+        addIconToContainer(binding.moodContainer, "😊", "😐", "😔")
+        addIconToContainer(binding.medicineContainer, "💊")
+    }
+
+    private fun addIconToContainer(container: LinearLayout, vararg emojis: String) {
+        container.removeAllViews()
+        for (emoji in emojis) {
+            val tv = TextView(requireContext()).apply {
+                text = emoji
+                textSize = 24f
+                layoutParams = LinearLayout.LayoutParams(120, 120).apply {
+                    setMargins(0, 0, 20, 0)
+                }
+                gravity = Gravity.CENTER
+                background = resources.getDrawable(R.drawable.bg_pill_pink_light, null)
             }
-        } else {
-            iv.clearColorFilter()
+            container.addView(tv)
         }
-
-        view.setOnClickListener {
-            val currentCount = logCounts[label] ?: 0
-            logCounts[label] = currentCount + 1
-            tv.text = "$label(${logCounts[label]}x)"
-            Toast.makeText(context, "$label ditambahkan!", Toast.LENGTH_SHORT).show()
-        }
-        container?.addView(view)
-    }
-
-    private fun addMoodItem(container: LinearLayout?, label: String, emoji: String) {
-        val view = layoutInflater.inflate(R.layout.item_stats_pill, container, false)
-        val tv = view.findViewById<TextView>(R.id.tvLabel)
-        val iv = view.findViewById<ImageView>(R.id.ivIcon)
-        iv.visibility = View.GONE
-        
-        // Menambahkan emoji secara manual (trik karena layout aslinya pake ImageView)
-        val parent = tv.parent as LinearLayout
-        val emojiTv = TextView(context).apply {
-            text = emoji
-            textSize = 18f
-        }
-        parent.addView(emojiTv, 0)
-
-        val key = if (label == "Normal") "Normal_Mood" else label
-        val count = logCounts[key] ?: 0
-        tv.text = "$label(${count}x)"
-
-        view.setOnClickListener {
-            val currentCount = logCounts[key] ?: 0
-            logCounts[key] = currentCount + 1
-            tv.text = "$label(${logCounts[key]}x)"
-            Toast.makeText(context, "Mood $label ditambahkan!", Toast.LENGTH_SHORT).show()
-        }
-        container?.addView(view)
     }
 
     override fun onDestroyView() {

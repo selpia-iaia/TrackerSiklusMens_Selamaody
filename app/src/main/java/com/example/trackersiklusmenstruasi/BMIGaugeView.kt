@@ -4,64 +4,81 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import kotlin.math.cos
-import kotlin.math.sin
 
 class BMIGaugeView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var bmiValue = 18.0f
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val arcRect = RectF()
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.BUTT
+    }
+
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
+        color = Color.BLACK
+        textSize = 40f
+        isFakeBoldText = true
+    }
+
+    private val needlePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.BLACK
+        strokeWidth = 8f
+        strokeCap = Paint.Cap.ROUND
+    }
+
+    private var bmiValue: Float = 19.0f
+    
+    // Colors from design: Blue, Green, Yellow, Orange
+    private val colors = intArrayOf(
+        Color.parseColor("#4FC3F7"), // Blue (Underweight)
+        Color.parseColor("#4CAF50"), // Green (Normal)
+        Color.parseColor("#FFEB3B"), // Yellow (Overweight)
+        Color.parseColor("#FB8C00")  // Orange (Obese)
+    )
 
     fun setBMI(value: Float) {
-        this.bmiValue = value
+        bmiValue = value
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val w = width.toFloat()
-        val h = height.toFloat()
-        val centerX = w / 2
-        val centerY = h * 0.8f
-        val radius = w * 0.35f
 
-        arcRect.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 40f
-        paint.strokeCap = Paint.Cap.BUTT
+        val centerX = width / 2f
+        val centerY = height * 0.85f
+        val radius = width * 0.4f
+        val thickness = 50f
+        
+        paint.strokeWidth = thickness
+        val rectF = RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
 
-        // Draw background arcs
-        val colors = intArrayOf(Color.parseColor("#4285F4"), Color.parseColor("#00ACC1"), Color.parseColor("#FBC02D"), Color.parseColor("#388E3C"), Color.parseColor("#1565C0"))
-        val sweep = 180f / colors.size
-        for (i in colors.indices) {
+        // Draw 4 segments (180 degrees total)
+        val sweepAngle = 180f / 4f
+        for (i in 0 until 4) {
             paint.color = colors[i]
-            canvas.drawArc(arcRect, 180f + (i * sweep), sweep, false, paint)
+            // Draw arcs with a small gap (2 degrees)
+            canvas.drawArc(rectF, 180f + (i * sweepAngle) + 1f, sweepAngle - 2f, false, paint)
         }
 
-        // Draw Needle
-        val angle = 180f + ((bmiValue - 10f) / 35f * 180f).coerceIn(0f, 180f)
-        val radian = Math.toRadians(angle.toDouble())
-        val needleLen = radius * 0.8f
+        // Draw BMI Text in center
+        canvas.drawText(String.format("%.1f", bmiValue), centerX, centerY - 60f, textPaint)
         
-        paint.color = Color.BLACK
-        paint.style = Paint.Style.FILL
-        canvas.drawCircle(centerX, centerY, 15f, paint)
-        
-        paint.strokeWidth = 8f
-        canvas.drawLine(centerX, centerY, 
-            (centerX + needleLen * cos(radian)).toFloat(), 
-            (centerY + needleLen * sin(radian)).toFloat(), paint)
+        val labelPaint = Paint(textPaint).apply { textSize = 24f; color = Color.GRAY; isFakeBoldText = false }
+        canvas.drawText("BMI (kg/m²)", centerX, centerY - 100f, labelPaint)
 
-        // Draw Value Text
-        paint.textAlign = Paint.Align.CENTER
-        paint.textSize = 40f
-        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        canvas.drawText("%.1f".format(bmiValue), centerX, centerY - 60f, paint)
-        paint.textSize = 20f
-        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-        canvas.drawText("BMI (kg/m²)", centerX, centerY - 30f, paint)
+        // Draw Needle
+        // Map BMI 10-40 to 180-360 degrees
+        val bmiRange = 40f - 10f
+        val angle = 180f + ((bmiValue - 10f) / bmiRange) * 180f
+        val needleLength = radius - 20f
+        
+        val stopX = centerX + Math.cos(Math.toRadians(angle.toDouble())).toFloat() * needleLength
+        val stopY = centerY + Math.sin(Math.toRadians(angle.toDouble())).toFloat() * needleLength
+        
+        canvas.drawLine(centerX, centerY, stopX, stopY, needlePaint)
+        
+        // Needle base circle
+        canvas.drawCircle(centerX, centerY, 15f, needlePaint)
     }
 }

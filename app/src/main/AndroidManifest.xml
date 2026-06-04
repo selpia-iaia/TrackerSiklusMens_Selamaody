@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TrackerSiklusMenstruasi">
+        android:theme="@style/Theme.TrackerSiklusMenstruasi"
+        android:usesCleartextTraffic="true">
 
         <activity
+<<<<<<< HEAD
             android:name=".SettingsActivity"
             android:exported="false">
+=======
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+>>>>>>> ee028d06e1666f0c9ee74c3ef5af345719b31285
         </activity>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".SettingsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +48,8 @@
         <activity android:name=".OtpActivity" />
         <activity android:name=".ProtectAccountActivity" />
         <activity android:name=".SetupCompleteActivity" />
-        <activity android:name=".PhaseDetailActivity" />
-        <activity android:name=".EditPeriodActivity" />
+        <activity android:name="com.example.trackersiklusmenstruasi.PhaseDetailActivity" />
+        <activity android:name="com.example.trackersiklusmenstruasi.EditPeriodActivity" />
         <activity android:name=".LogEntryActivity" />
         <activity android:name=".WeightEntryActivity" />
         <activity android:name=".TempEntryActivity" />
@@ -46,6 +60,14 @@
         <activity android:name=".UnlockPremiumActivity" />
         <activity android:name=".ChoosePaymentActivity" />
         <activity android:name=".PaymentSuccessActivity" />
+        <activity android:name=".HealthTipsActivity" />
+        <activity android:name=".PersonalDataActivity" />
+        <activity android:name=".BillingMethodsActivity" />
+        <activity android:name=".ConnectedAccountActivity" />
+        <activity android:name=".AccountSecurityActivity" />
+        <activity android:name=".ReminderAlertActivity" />
+        <activity android:name=".AddPayOptionActivity" />
+        <activity android:name=".GeneralSettingsActivity" />
 
     </application>
 

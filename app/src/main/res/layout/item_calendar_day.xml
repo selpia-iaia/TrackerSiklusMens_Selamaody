@@ -5,7 +5,10 @@
     android:layout_weight="1"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless">
 
     <TextView
         android:id="@+id/tvDayLetter"
