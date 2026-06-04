@@ -113,7 +113,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/bg_button_pink"
-        android:text="Continue"
+        android:text="Lanjutkan"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:backgroundTint="@color/pink_main"
