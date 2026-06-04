@@ -36,14 +36,23 @@ class SettingsActivity : AppCompatActivity() {
         binding.itemNotifikasi.apply {
             ivIcon.setImageResource(R.drawable.ic_calendar)
             tvTitle.text = "Peringatan Pengingat"
+            root.setOnClickListener {
+                startActivity(Intent(this@SettingsActivity, ReminderAlertActivity::class.java))
+            }
         }
         binding.itemKeamanan.apply {
             ivIcon.setImageResource(R.drawable.ic_lock)
             tvTitle.text = "Akun & Keamanan"
+            root.setOnClickListener {
+                startActivity(Intent(this@SettingsActivity, AccountSecurityActivity::class.java))
+            }
         }
         binding.itemAkun.apply {
             ivIcon.setImageResource(R.drawable.ic_user)
             tvTitle.text = "Akun Terhubung"
+            root.setOnClickListener {
+                startActivity(Intent(this@SettingsActivity, ConnectedAccountActivity::class.java))
+            }
         }
 
         binding.itemMetodePembayaran.apply {
@@ -64,6 +73,9 @@ class SettingsActivity : AppCompatActivity() {
         binding.itemPenampilan2.apply {
             ivIcon.setImageResource(R.drawable.ic_list)
             tvTitle.text = "Riwayat Siklus"
+            root.setOnClickListener {
+                startActivity(Intent(this@SettingsActivity, CycleHistoryActivity::class.java))
+            }
         }
     }
 }
