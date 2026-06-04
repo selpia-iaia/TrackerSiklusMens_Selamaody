@@ -24,7 +24,8 @@
         <item name="cornerRadius">0dp</item>
     </style>
 
-    <style name="CircleImage">
+    <style name="CircleImageView" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 </resources>

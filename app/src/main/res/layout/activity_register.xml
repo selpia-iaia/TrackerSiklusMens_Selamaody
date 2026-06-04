@@ -3,18 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/peach_bg">
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_back_button"
+        android:background="@drawable/bg_circle_white"
+        android:elevation="2dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
         android:contentDescription="Back" />
 
     <View
@@ -52,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Gabung sekarang untuk pantau siklus Anda."
+                android:text="Gabung sekarang untuk melacak siklus Anda."
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 
@@ -170,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Saya setuju dengan Syarat &amp; Ketentuan."
+                android:text="Saya setuju dengan Syarat &amp; Ketentuan Selamaody"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 app:buttonTint="@color/pink_main" />
@@ -203,32 +205,35 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/bg_back_button"
+                    android:background="@drawable/bg_circle_white"
+                    android:elevation="1dp"
                     android:src="@drawable/ic_google"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     android:scaleType="fitCenter"
                     android:contentDescription="Google Login" />
 
                 <ImageButton
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/bg_back_button"
+                    android:background="@drawable/bg_circle_white"
+                    android:elevation="1dp"
                     android:src="@drawable/ic_apple"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     android:scaleType="fitCenter"
                     android:contentDescription="Apple Login" />
 
                 <ImageButton
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/bg_back_button"
+                    android:background="@drawable/bg_circle_white"
+                    android:elevation="1dp"
                     android:src="@drawable/ic_facebook"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     android:scaleType="fitCenter"
                     android:contentDescription="Facebook Login" />
             </LinearLayout>
@@ -244,7 +249,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sudah punya akun? "
+                    android:text="Sudah memiliki akun? "
                     android:textColor="@color/gray"
                     android:textSize="12sp" />
 

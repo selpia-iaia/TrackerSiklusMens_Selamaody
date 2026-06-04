@@ -7,14 +7,16 @@
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_back_button"
+        android:background="@drawable/bg_circle_white"
+        android:elevation="2dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
         android:contentDescription="Back" />
 
     <!-- Card background that starts from the top area and goes to the bottom -->
@@ -45,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Daftar Akun"
+                android:text="Daftar"
                 android:textColor="@color/black"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -136,15 +138,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kebijakan Privasi"
+                    android:text="Privacy Policy"
                     android:textColor="@color/gray"
                     android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:text="Ketentuan Layanan"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="Terms of Service"
                     android:textColor="@color/gray"
                     android:textSize="12sp" />
             </LinearLayout>

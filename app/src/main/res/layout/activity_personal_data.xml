@@ -60,7 +60,7 @@
                     android:padding="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_profile"
-                    app:shapeAppearanceOverlay="@style/CircleImageView"
+                    app:shapeAppearance="@style/CircleImageView"
                     app:strokeColor="@color/pink_main"
                     app:strokeWidth="2dp" />
 
