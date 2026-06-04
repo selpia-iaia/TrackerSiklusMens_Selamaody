@@ -12,7 +12,9 @@ import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.trackersiklusmenstruasi.databinding.ActivityProfileSetupBinding
@@ -25,13 +27,13 @@ class ProfileSetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileSetupBinding
     private val steps = listOf(
-        "Beritahu Kami\nNama Anda",
-        "Beritahu Kami\nUlang Tahun Anda",
-        "Beritahu Kami\nBerat Badan Anda",
-        "Beritahu Kami\nTinggi Badan Anda",
-        "Lama Periode\nMenstruasi Anda",
-        "Masukkan Lama\nSiklus Anda",
-        "Kapan Tanggal Mulai\nHaid Terakhir Anda?"
+        "Siapa nama Anda?",
+        "Kapan ulang tahun Anda?",
+        "Berapa berat badan Anda?",
+        "Berapa tinggi badan Anda?",
+        "Berapa lama menstruasi Anda?",
+        "Berapa lama siklus Anda?",
+        "Masukkan Tanggal Mulai dan\nTanggal Terakhir Menstruasi Anda?"
     )
 
     // Data to be saved
@@ -42,6 +44,8 @@ class ProfileSetupActivity : AppCompatActivity() {
     private var periodLength = 3
     private var cycleLength = 27
     private var lastPeriod = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
+    private var lastPeriodStart: Calendar? = null
+    private var lastPeriodEnd: Calendar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +95,13 @@ class ProfileSetupActivity : AppCompatActivity() {
             cycleLength,
             lastPeriod
         )
+
+        lastPeriodStart?.let { start ->
+            lastPeriodEnd?.let { end ->
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                dbHelper.savePeriod(sdf.format(start.time), sdf.format(end.time))
+            }
+        }
     }
 
     private fun updateProgress(position: Int) {
@@ -100,6 +111,215 @@ class ProfileSetupActivity : AppCompatActivity() {
             val dot = progressContainer.getChildAt(i)
             dot.alpha = if (i == position) 1.0f else 0.1f
         }
+    }
+
+    inner class MonthAdapter(private val months: List<Calendar>) : RecyclerView.Adapter<MonthAdapter.MonthViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setup_calendar_month, parent, false)
+            return MonthViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
+            val monthCalendar = months[position]
+            val tvMonthYear = holder.itemView.findViewById<TextView>(R.id.tvMonthYear)
+            val localeID = Locale("id", "ID")
+            val sdf = SimpleDateFormat("MMMM yyyy", localeID)
+            tvMonthYear.text = sdf.format(monthCalendar.time)
+
+            val llMonthPicker = holder.itemView.findViewById<View>(R.id.llMonthPicker)
+            llMonthPicker.setOnClickListener {
+                showMonthYearPickerDialog(monthCalendar) { newDate ->
+                    // Logic untuk scroll ke bulan yang dipilih bisa ditambahkan di sini
+                }
+            }
+
+            val gridDays = holder.itemView.findViewById<android.widget.GridLayout>(R.id.gridDays)
+            setupMonthGrid(gridDays, monthCalendar)
+        }
+
+        private fun showMonthYearPickerDialog(current: Calendar, onDatePicked: (Calendar) -> Unit) {
+            val dialog = android.app.AlertDialog.Builder(this@ProfileSetupActivity).create()
+            val view = layoutInflater.inflate(R.layout.dialog_month_year_picker, null)
+            val pickerMonth = view.findViewById<NumberPicker>(R.id.pickerMonth)
+            val pickerYear = view.findViewById<NumberPicker>(R.id.pickerYear)
+
+            val months = arrayOf("Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des")
+            pickerMonth.minValue = 0
+            pickerMonth.maxValue = 11
+            pickerMonth.displayedValues = months
+            pickerMonth.value = current.get(Calendar.MONTH)
+
+            pickerYear.minValue = 2000
+            pickerYear.maxValue = 2030
+            pickerYear.value = current.get(Calendar.YEAR)
+
+            view.findViewById<TextView>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }
+            view.findViewById<TextView>(R.id.btnOk).setOnClickListener {
+                val result = Calendar.getInstance()
+                result.set(Calendar.YEAR, pickerYear.value)
+                result.set(Calendar.MONTH, pickerMonth.value)
+                onDatePicked(result)
+                dialog.dismiss()
+            }
+
+            dialog.setView(view)
+            dialog.show()
+        }
+
+        override fun getItemCount() = months.size
+
+        private fun setupMonthGrid(grid: android.widget.GridLayout, monthCal: Calendar) {
+            grid.removeAllViews()
+            grid.columnCount = 7
+            val dayNames = listOf("S", "M", "T", "W", "T", "F", "S")
+            for (name in dayNames) {
+                val tv = TextView(grid.context).apply {
+                    text = name
+                    textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    setTextColor(Color.parseColor("#9E9E9E")) // gray
+                    textSize = 12f
+                    setPadding(0, 0, 0, 16)
+                    layoutParams = android.widget.GridLayout.LayoutParams().apply {
+                        width = 0
+                        height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                    }
+                }
+                grid.addView(tv)
+            }
+
+            val tempCal = monthCal.clone() as Calendar
+            tempCal.set(Calendar.DAY_OF_MONTH, 1)
+            val firstDayOfWeek = tempCal.get(Calendar.DAY_OF_WEEK) - 1 // 0 for Sunday
+            val daysInMonth = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+            // Previous month padding
+            val prevMonthCal = tempCal.clone() as Calendar
+            prevMonthCal.add(Calendar.MONTH, -1)
+            val daysInPrevMonth = prevMonthCal.getActualMaximum(Calendar.DAY_OF_MONTH)
+            for (i in (daysInPrevMonth - firstDayOfWeek + 1)..daysInPrevMonth) {
+                val dayView = LayoutInflater.from(grid.context).inflate(R.layout.item_calendar_setup_day, grid, false)
+                val tvDay = dayView.findViewById<TextView>(R.id.tvDay)
+                tvDay.text = i.toString()
+                tvDay.setTextColor(Color.parseColor("#E0E0E0")) // very light gray
+                tvDay.setTypeface(null, Typeface.NORMAL)
+                
+                dayView.layoutParams = android.widget.GridLayout.LayoutParams().apply {
+                    width = 0
+                    height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                }
+                grid.addView(dayView)
+            }
+
+            for (i in 1..daysInMonth) {
+                val dayView = LayoutInflater.from(grid.context).inflate(R.layout.item_calendar_setup_day, grid, false)
+                val tvDay = dayView.findViewById<TextView>(R.id.tvDay)
+                val viewRangeMiddle = dayView.findViewById<View>(R.id.viewRangeMiddle)
+                val viewRangeStart = dayView.findViewById<View>(R.id.viewRangeStart)
+                val viewRangeEnd = dayView.findViewById<View>(R.id.viewRangeEnd)
+                
+                tvDay.text = i.toString()
+                tvDay.setTypeface(null, Typeface.BOLD)
+
+                val currentDayCal = tempCal.clone() as Calendar
+                currentDayCal.set(Calendar.DAY_OF_MONTH, i)
+
+                updateDayHighlight(tvDay, viewRangeStart, viewRangeEnd, viewRangeMiddle, currentDayCal)
+
+                dayView.setOnClickListener {
+                    handleDateSelection(currentDayCal)
+                    notifyDataSetChanged()
+                }
+
+                dayView.layoutParams = android.widget.GridLayout.LayoutParams().apply {
+                    width = 0
+                    height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                }
+                grid.addView(dayView)
+            }
+            
+            // Next month padding
+            val remainingCells = 42 - (firstDayOfWeek + daysInMonth)
+            if (remainingCells > 0) {
+                for (i in 1..remainingCells) {
+                    val dayView = LayoutInflater.from(grid.context).inflate(R.layout.item_calendar_setup_day, grid, false)
+                    val tvDay = dayView.findViewById<TextView>(R.id.tvDay)
+                    tvDay.text = i.toString()
+                    tvDay.setTextColor(Color.parseColor("#E0E0E0"))
+                    tvDay.setTypeface(null, Typeface.NORMAL)
+
+                    dayView.layoutParams = android.widget.GridLayout.LayoutParams().apply {
+                        width = 0
+                        height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                    }
+                    grid.addView(dayView)
+                }
+            }
+        }
+
+        private fun updateDayHighlight(tvDay: TextView, viewStart: View, viewEnd: View, viewMiddle: View, dayCal: Calendar) {
+            val isStart = isSameDay(dayCal, lastPeriodStart)
+            val isEnd = isSameDay(dayCal, lastPeriodEnd)
+            val isInBetween = isBetween(dayCal, lastPeriodStart, lastPeriodEnd)
+
+            viewStart.visibility = View.GONE
+            viewEnd.visibility = View.GONE
+            viewMiddle.visibility = View.GONE
+
+            if (isStart && isEnd) {
+                tvDay.setBackgroundResource(R.drawable.bg_button_pink)
+                tvDay.setTextColor(Color.WHITE)
+            } else if (isStart) {
+                tvDay.setBackgroundResource(R.drawable.bg_button_pink)
+                tvDay.setTextColor(Color.WHITE)
+                viewStart.visibility = View.VISIBLE
+            } else if (isEnd) {
+                tvDay.setBackgroundResource(R.drawable.bg_button_pink)
+                tvDay.setTextColor(Color.WHITE)
+                viewEnd.visibility = View.VISIBLE
+            } else if (isInBetween) {
+                tvDay.setBackgroundResource(0)
+                tvDay.setTextColor(Color.BLACK)
+                viewMiddle.visibility = View.VISIBLE
+            } else {
+                tvDay.setBackgroundResource(0)
+                tvDay.setTextColor(Color.BLACK)
+            }
+        }
+
+        private fun handleDateSelection(dayCal: Calendar) {
+            if (lastPeriodStart == null || (lastPeriodStart != null && lastPeriodEnd != null)) {
+                lastPeriodStart = dayCal
+                lastPeriodEnd = null
+                lastPeriod = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(dayCal.time)
+            } else if (dayCal.before(lastPeriodStart)) {
+                // If new date is before current start, make it the new start
+                lastPeriodStart = dayCal
+                lastPeriod = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(dayCal.time)
+            } else if (isSameDay(dayCal, lastPeriodStart)) {
+                // Deselect if same day
+                lastPeriodStart = null
+                lastPeriodEnd = null
+            } else {
+                lastPeriodEnd = dayCal
+            }
+        }
+
+        private fun isSameDay(cal1: Calendar, cal2: Calendar?): Boolean {
+            if (cal2 == null) return false
+            return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                    cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+        }
+
+        private fun isBetween(dayCal: Calendar, start: Calendar?, end: Calendar?): Boolean {
+            if (start == null || end == null) return false
+            return dayCal.after(start) && dayCal.before(end)
+        }
+
+        inner class MonthViewHolder(view: View) : RecyclerView.ViewHolder(view)
     }
 
     inner class StepAdapter(private val titles: List<String>) : RecyclerView.Adapter<StepAdapter.ViewHolder>() {
@@ -141,7 +361,7 @@ class ProfileSetupActivity : AppCompatActivity() {
                     })
                 }
                 1 -> { // Birthday
-                    val months = arrayOf("Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+                    val months = arrayOf("Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des")
                     val pickerMonth = view.findViewById<NumberPicker>(R.id.pickerMonth)
                     val pickerDay = view.findViewById<NumberPicker>(R.id.pickerDay)
                     val pickerYear = view.findViewById<NumberPicker>(R.id.pickerYear)
@@ -266,10 +486,23 @@ class ProfileSetupActivity : AppCompatActivity() {
                     setRegularMode() // Default
                 }
                 6 -> { // Last Period
-                    val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
-                    calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                        lastPeriod = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                    val rvCalendar = view.findViewById<RecyclerView>(R.id.rvCalendar)
+                    val months = mutableListOf<Calendar>()
+                    val current = Calendar.getInstance()
+                    // Show 12 months (6 back, 6 forward)
+                    val start = current.clone() as Calendar
+                    start.add(Calendar.MONTH, -6)
+                    for (i in 0..12) {
+                        months.add(start.clone() as Calendar)
+                        start.add(Calendar.MONTH, 1)
                     }
+
+                    rvCalendar.layoutManager = LinearLayoutManager(holder.itemView.context)
+                    val adapter = MonthAdapter(months)
+                    rvCalendar.adapter = adapter
+                    
+                    // Scroll to current month (index 6 since we added 6 months back)
+                    rvCalendar.scrollToPosition(6)
                 }
             }
         }

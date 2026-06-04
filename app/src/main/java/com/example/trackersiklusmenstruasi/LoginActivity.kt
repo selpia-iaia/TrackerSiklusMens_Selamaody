@@ -41,7 +41,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            SessionManager(this).setLoggedIn(true)
+            val sessionManager = SessionManager(this)
+            sessionManager.setLoggedIn(true)
+            sessionManager.setUserId(1) // Default user ID untuk simulasi
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

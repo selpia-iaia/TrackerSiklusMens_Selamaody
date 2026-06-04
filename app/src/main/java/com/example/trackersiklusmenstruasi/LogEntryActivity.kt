@@ -79,7 +79,6 @@ class LogEntryActivity : AppCompatActivity() {
     }
 
     private fun saveLog() {
-        // Simple logic for now, using current date
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = sdf.format(Date())
         
@@ -87,10 +86,10 @@ class LogEntryActivity : AppCompatActivity() {
         
         val result = dbHelper.saveDailyLog(
             currentDate,
-            "Normal",
-            "Kepala Sakit",
-            "Senang",
-            "Pil Obat",
+            selectedFlow,
+            "Sakit Kepala", // Default for now
+            "Normal",       // Default for now
+            "Pil",          // Default for now
             note
         )
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.trackersiklusmenstruasi.databinding.FragmentCalendarBinding
+import com.example.trackersiklusmenstruasi.EditPeriodActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,7 +44,7 @@ class CalendarFragment : Fragment() {
         }
 
         binding.btnSuntingSiklus.setOnClickListener {
-            startActivity(Intent(requireContext(), WaterIntakeActivity::class.java))
+            startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
         }
 
         // Navigation between months
@@ -92,12 +93,12 @@ class CalendarFragment : Fragment() {
             try {
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 // Tanggal haid terakhir (Default dummy: 2026-03-07)
-                val lastPeriodDate = sdf.parse(it.lastPeriod) ?: Date()
+                val lastPeriodDate = sdf.parse(it.last_period) ?: Date()
                 
                 // 1. Hitung Perkiraan Haid Berikutnya (Misal: 7 Maret + 28 hari = 4 April)
                 val nextPeriodCal = Calendar.getInstance()
                 nextPeriodCal.time = lastPeriodDate
-                nextPeriodCal.add(Calendar.DAY_OF_YEAR, it.cycleLength)
+                nextPeriodCal.add(Calendar.DAY_OF_YEAR, it.cycle_length)
                 
                 // 2. Hitung Batas Telat 2 Minggu (4 April + 14 hari = 18 April)
                 val lateLimitCal = nextPeriodCal.clone() as Calendar

@@ -59,7 +59,7 @@ class ProfileFragment : Fragment() {
         dialogView.findViewById<android.view.View>(R.id.btnLogout).setOnClickListener {
             dialog.dismiss()
             SessionManager(requireContext()).logout()
-            val intent = Intent(requireContext(), OnboardingActivity::class.java)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
@@ -75,8 +75,8 @@ class ProfileFragment : Fragment() {
             binding.tvProfileName.text = it.name
             binding.tvWeight.text = "${it.weight.toInt()} Kg"
             binding.tvHeight.text = "${it.height.toInt()} Cm"
-            binding.tvPeriodLen.text = "${it.periodLength} Hari"
-            binding.tvCycleLen.text = "${it.cycleLength} Hari"
+            binding.tvPeriodLen.text = "${it.period_length} Hari"
+            binding.tvCycleLen.text = "${it.cycle_length} Hari"
             
             // Calculate age from birthday (yyyy-MM-dd)
             try {

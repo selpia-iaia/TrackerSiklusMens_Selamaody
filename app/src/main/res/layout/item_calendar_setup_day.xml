@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+
+    <!-- Range background that fills the cell -->
+    <View
+        android:id="@+id/viewRangeMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:background="@color/bg_light_pink"
+        android:visibility="gone" />
+
+    <!-- Range background for start day (only right half) -->
+    <View
+        android:id="@+id/viewRangeStart"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="24dp"
+        android:background="@color/bg_light_pink"
+        android:visibility="gone" />
+
+    <!-- Range background for end day (only left half) -->
+    <View
+        android:id="@+id/viewRangeEnd"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="24dp"
+        android:background="@color/bg_light_pink"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvDay"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</FrameLayout>

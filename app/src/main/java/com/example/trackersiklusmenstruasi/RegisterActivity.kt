@@ -6,6 +6,9 @@ import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackersiklusmenstruasi.databinding.ActivityRegisterBinding
 
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
@@ -36,7 +39,30 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnSignup.setOnClickListener {
-            startActivity(Intent(this, ProfileSetupActivity::class.java))
+            val username = binding.etFullName.text.toString()
+            val email = binding.etEmail.text.toString()
+            val password = binding.etPassword.text.toString()
+
+            lifecycleScope.launch {
+                try {
+                    val apiService = ApiService.create()
+                    val response = apiService.registerUser(UserModel(username, email, password))
+                    if (response.success) {
+                        // Simpan User ID asli dari server ke SessionManager
+                        response.user_id?.let { id ->
+                            SessionManager(this@RegisterActivity).setUserId(id)
+                        }
+                        startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(this@RegisterActivity, response.message, android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    // Jika offline, lanjut dengan ID dummy untuk testing
+                    startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
+                    finish()
+                }
+            }
         }
     }
 }
