@@ -1,173 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDF7F8">
+    android:background="@color/white">
 
-    <!-- Header -->
-    <RelativeLayout
+    <!-- Header Sesuai Gambar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:background="@drawable/bg_circle_white"
             android:elevation="2dp"
+            android:padding="10dp"
             android:src="@drawable/ic_back"
-            app:tint="@color/black"
-            android:contentDescription="Back" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:text="Metode Pembayaran"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btnAddNew"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/header">
 
-        <GridLayout
+        <!-- BCA Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBCA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:columnCount="2">
-
-            <!-- Card Items (similar to connected accounts but with emails/card numbers) -->
-            <!-- Item 1: Google Pay -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FDF7F8">
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_google" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Google Pay" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="sela123@gmail.com" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:padding="20dp">
+                <ImageView
+                    android:id="@+id/ivBCA"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_visa" /> <!-- Use ic_visa as placeholder for Bank icon -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/ivBCA"
+                    android:layout_marginStart="16dp"
+                    android:layout_centerVertical="true"
+                    android:text="Bank BCA"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rbBCA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-            <!-- Item 2: PayPal -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+        <!-- E-Wallet Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardWallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FDF7F8">
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_plus" app:tint="#003087" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PayPal" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="sela123@gmail.com" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:padding="20dp">
+                <ImageView
+                    android:id="@+id/ivWallet"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_scan" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/ivWallet"
+                    android:layout_marginStart="16dp"
+                    android:layout_centerVertical="true"
+                    android:text="E-Wallet (OVO/Gopay/Dana)"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rbWallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-            <!-- Item 3: Apple Pay -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+        <!-- Google Play Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FDF7F8">
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_apple" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Apple Pay" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="sela123@gmail.com" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:padding="20dp">
+                <ImageView
+                    android:id="@+id/ivGoogle"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_user" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/ivGoogle"
+                    android:layout_marginStart="16dp"
+                    android:layout_centerVertical="true"
+                    android:text="Google Play Billing"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rbGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-            <!-- Item 4: Mastercard -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_mastercard" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mastercard" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="**** **** **** 2589" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Item 5: Visa -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_visa" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Visa" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="**** **** **** 5742" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Item 6: Twitter (X) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_twitter" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Terhubung" android:textColor="@color/gray" android:textSize="10sp" />
-                    </RelativeLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Twitter" android:textColor="@color/black" android:textStyle="bold" android:layout_marginTop="20dp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="**** **** **** 2589" android:textColor="@color/gray" android:textSize="10sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAddNew"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:text="Tambahkan Pembayaran Baru"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/pink_main"
-        app:cornerRadius="30dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

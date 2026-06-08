@@ -1,13 +1,18 @@
 package com.example.trackersiklusmenstruasi
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.trackersiklusmenstruasi.databinding.ActivitySettingsBinding
+import java.io.File
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -15,19 +20,42 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadUserData()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.root.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         setupItems()
         setupClickListeners()
         setupBottomNavUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadUserData()
+    }
+
     private fun loadUserData() {
+        // Load Image safely
+        try {
+            val file = File(filesDir, "profile_pic_final.jpg")
+            if (file.exists()) {
+                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                binding.ivProfile.setImageBitmap(bitmap)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         val dbHelper = DatabaseHelper.getInstance(this)
         val profile = dbHelper.getUserProfile()
         profile?.let {
+            binding.tvHeaderName.text = it.name
             binding.tvProfileName.text = it.name
             binding.tvProfileEmail.text = "${it.name.lowercase().replace(" ", "")}@gmail.com"
         }
@@ -35,22 +63,48 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupBottomNavUI() {
         val nav = binding.customBottomNav.root
-        nav.findViewById<View>(R.id.vNavBgProfile).setBackgroundResource(R.drawable.bg_circle_pink)
-        nav.findViewById<ImageView>(R.id.ivNavProfile).setColorFilter(Color.WHITE)
+        
+        // Profile is active (Index 3)
+        val items = listOf(
+            R.id.btnNavHome to R.id.ivNavHome,
+            R.id.btnNavCalendar to R.id.ivNavCalendar,
+            R.id.btnNavStats to R.id.ivNavStats,
+            R.id.btnNavProfile to R.id.ivNavProfile
+        )
+        val activeIndex = 3
 
-        nav.findViewById<View>(R.id.vNavBgHome).setBackgroundResource(R.drawable.bg_circle_white)
-        nav.findViewById<ImageView>(R.id.ivNavHome).setColorFilter(Color.BLACK)
-        nav.findViewById<View>(R.id.vNavBgCalendar).setBackgroundResource(R.drawable.bg_circle_white)
-        nav.findViewById<ImageView>(R.id.ivNavCalendar).setColorFilter(Color.BLACK)
-        nav.findViewById<View>(R.id.vNavBgStats).setBackgroundResource(R.drawable.bg_circle_white)
-        nav.findViewById<ImageView>(R.id.ivNavStats).setColorFilter(Color.BLACK)
+        items.forEachIndexed { i, (btnId, ivId) ->
+            val iv = nav.findViewById<ImageView>(ivId)
+            val bgViewId = when(btnId) {
+                R.id.btnNavHome -> R.id.vNavBgHome
+                R.id.btnNavCalendar -> R.id.vNavBgCalendar
+                R.id.btnNavStats -> R.id.vNavBgStats
+                R.id.btnNavProfile -> R.id.vNavBgProfile
+                else -> -1
+            }
+            val bgView = nav.findViewById<View>(bgViewId)
+            
+            if (i == activeIndex) {
+                bgView?.setBackgroundResource(R.drawable.bg_circle_pink)
+                iv?.setColorFilter(Color.WHITE)
+            } else {
+                bgView?.setBackgroundResource(R.drawable.bg_circle_white)
+                iv?.setColorFilter(Color.BLACK)
+            }
+        }
     }
 
     private fun setupClickListeners() {
         binding.btnMenuTop.setOnClickListener {
-            val popup = android.widget.PopupMenu(this, it)
+            val popup = PopupMenu(this, it)
             popup.menu.add("Bantuan")
-            popup.menu.add("Privasi")
+            
+            popup.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "Bantuan" -> startActivity(Intent(this, HelpActivity::class.java))
+                }
+                true
+            }
             popup.show()
         }
 
@@ -82,7 +136,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, CycleHistoryActivity::class.java))
         }
 
-        binding.btnKeluar.setOnClickListener {
+        binding.itemKeluar.root.setOnClickListener {
             android.app.AlertDialog.Builder(this)
                 .setTitle("Keluar")
                 .setMessage("Apakah Anda yakin ingin keluar?")
@@ -121,7 +175,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.itemNotifikasi.apply {
             tvTitle.text = "Peringatan Pengingat"
-            ivIcon.setImageResource(R.drawable.ic_calendar) // Harusnya ikon jam jika ada
+            ivIcon.setImageResource(R.drawable.ic_volume_up)
         }
         binding.itemKeamanan.apply {
             tvTitle.text = "Akun & Keamanan"
@@ -129,7 +183,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.itemAkun.apply {
             tvTitle.text = "Akun Terhubung"
-            ivIcon.setImageResource(R.drawable.ic_user) // Harusnya ikon panah bolak balik
+            ivIcon.setImageResource(R.drawable.ic_list)
         }
 
         // Section Support
@@ -141,9 +195,12 @@ class SettingsActivity : AppCompatActivity() {
             tvTitle.text = "Data & Analisis"
             ivIcon.setImageResource(R.drawable.ic_bar_chart)
         }
-    }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        binding.itemKeluar.apply {
+            tvTitle.text = "Keluar"
+            tvTitle.setTextColor(Color.parseColor("#FF5C7A"))
+            ivIcon.setImageResource(R.drawable.ic_close)
+            ivIcon.setColorFilter(Color.parseColor("#FF5C7A"))
+        }
     }
 }

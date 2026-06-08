@@ -31,7 +31,6 @@ class CycleProgressView @JvmOverloads constructor(
     }
 
     private var progress: Float = 0.35f 
-    private val startColor = Color.parseColor("#FFDDE1") 
     private val endColor = Color.parseColor("#FF5C7A") 
 
     fun setProgress(newProgress: Float) {
@@ -48,28 +47,28 @@ class CycleProgressView @JvmOverloads constructor(
         val centerY = height / 2f
         val size = width.coerceAtMost(height).toFloat()
         
-        // "Tebal": set stroke width as 15% of the total size
-        val strokeWidthValue = size * 0.15f
+        val strokeWidthValue = size * 0.12f
         backgroundPaint.strokeWidth = strokeWidthValue
-        backgroundPaint.color = Color.parseColor("#F5F5F5")
+        backgroundPaint.color = Color.parseColor("#F8F8F8")
         
         progressPaint.strokeWidth = strokeWidthValue
 
-        // "Agak kecil": radius is slightly smaller to leave margin but not hidden by text
-        val radius = (size - strokeWidthValue - 60f) / 2f
+        val radius = (size - strokeWidthValue - 40f) / 2f
         
         if (radius <= 0) return
 
         // 1. Draw Background Track
         canvas.drawCircle(centerX, centerY, radius, backgroundPaint)
 
-        // 2. Draw Progress Arc with Gradient
+        // 2. Draw Progress Arc with "Samar" (Faded) Start
         val rectF = RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
         
-        val gradient = SweepGradient(centerX, centerY, 
-            intArrayOf(startColor, endColor, endColor), 
-            floatArrayOf(0f, progress, 1f)
-        )
+        // We use 3 colors: Start (Bg color), Middle/End of progress (Pink), and End of circle (Bg color again to avoid bleed)
+        val trackColor = Color.parseColor("#F8F8F8")
+        val colors = intArrayOf(trackColor, endColor, trackColor)
+        val positions = floatArrayOf(0f, progress, 1f)
+        
+        val gradient = SweepGradient(centerX, centerY, colors, positions)
         val matrix = Matrix()
         matrix.postRotate(-90f, centerX, centerY)
         gradient.setLocalMatrix(matrix)
@@ -82,7 +81,7 @@ class CycleProgressView @JvmOverloads constructor(
         val dotX = centerX + radius * Math.cos(angle).toFloat()
         val dotY = centerY + radius * Math.sin(angle).toFloat()
         
-        val thumbRadius = strokeWidthValue / 2f - 2f
+        val thumbRadius = strokeWidthValue / 2f
         
         thumbPaint.setShadowLayer(10f, 0f, 4f, Color.parseColor("#30000000"))
         canvas.drawCircle(dotX, dotY, thumbRadius, thumbPaint)

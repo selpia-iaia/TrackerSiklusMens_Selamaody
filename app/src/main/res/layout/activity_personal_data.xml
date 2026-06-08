@@ -11,18 +11,21 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/bg_circle_white"
-            android:elevation="2dp"
+            android:background="@drawable/bg_back_button"
+            android:contentDescription="Back"
+            android:padding="10dp"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_back"
-            app:tint="@color/black"
-            android:contentDescription="Back" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,51 +33,56 @@
             android:layout_centerInParent="true"
             android:text="Data Pribadi"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:gravity="center_horizontal">
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
 
-            <!-- Profile Picture -->
+            <!-- Profile Picture Section -->
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="12dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:padding="2dp"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_profile"
+                    android:src="@drawable/ic_user"
+                    android:background="#F0F0F0"
                     app:shapeAppearanceOverlay="@style/CircleImage"
                     app:strokeColor="@color/pink_main"
-                    app:strokeWidth="2dp" />
+                    app:strokeWidth="2dp"
+                    android:padding="2dp" />
 
                 <ImageButton
                     android:id="@+id/btnEditPhoto"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_alignBottom="@id/ivProfile"
                     android:layout_alignEnd="@id/ivProfile"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/bg_circle_pink"
+                    android:padding="5dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/ic_edit"
-                    app:tint="@color/white"
-                    android:padding="4dp"
-                    android:layout_margin="2dp" />
+                    app:tint="@color/white" />
             </RelativeLayout>
 
             <TextView
@@ -87,14 +95,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Section 1: Basic Info -->
+            <!-- Field Group 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,73 +110,270 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <include layout="@layout/item_profile_field" android:id="@+id/itemNama" />
-                    <include layout="@layout/item_profile_field" android:id="@+id/itemEmail" />
-                    <include layout="@layout/item_profile_field" android:id="@+id/itemTelepon" />
+                    <include
+                        android:id="@+id/itemNama"
+                        layout="@layout/item_profile_field" />
 
-                    <RelativeLayout android:id="@+id/rowGender" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jenis Kelamin" android:textStyle="bold" android:textColor="@color/black" />
-                            <TextView android:id="@+id/tvValGender" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Perempuan" android:textColor="@color/gray" />
+                    <include
+                        android:id="@+id/itemEmail"
+                        layout="@layout/item_profile_field" />
+
+                    <include
+                        android:id="@+id/itemTelepon"
+                        layout="@layout/item_profile_field" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Jenis Kelamin"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvValGender"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Perempuan"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
                         </LinearLayout>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_down" app:tint="@color/gray"/>
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/gray" />
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowBirthday" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tanggal Lahir" android:textStyle="bold" android:textColor="@color/black" />
-                            <TextView android:id="@+id/tvValBirthday" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12 - 25 - 2006" android:textColor="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowBirthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tanggal Lahir"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvValBirthday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="12 - 25 - 2006"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
                         </LinearLayout>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_calendar" app:tint="@color/gray" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/gray" />
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowLocation" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lokasi" android:textStyle="bold" android:textColor="@color/black" />
-                            <TextView android:id="@+id/tvValLocation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cicaheum" android:textColor="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lokasi"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvValLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cicaheum"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
                         </LinearLayout>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_location" app:tint="@color/gray" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_location"
+                            app:tint="@color/gray" />
                     </RelativeLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 2: Physical & BMI -->
+            <!-- Field Group 2 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="0dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <RelativeLayout android:id="@+id/rowWeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Berat Badan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="57 Kg" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <RelativeLayout
+                        android:id="@+id/rowWeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Berat Badan"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValWeight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kg"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowHeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tinggi Badan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="167 Cm" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowHeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Tinggi Badan"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValHeight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cm"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BMI (Body Mass Index)" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="BMI (Body Mass Index)"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switchBMI"
                             android:layout_width="wrap_content"
@@ -176,112 +381,343 @@
                             android:layout_alignParentEnd="true"
                             android:checked="true"
                             app:thumbTint="@color/pink_main"
-                            app:trackTint="@color/pink_card"/>
+                            app:trackTint="#FFDEE4" />
                     </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 3: Time Settings -->
+            <!-- Field Group 3 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="0dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <RelativeLayout android:id="@+id/rowWeekStart" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pekan" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValWeekStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Senin" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <RelativeLayout
+                        android:id="@+id/rowWeekStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Pekan"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValWeekStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Senin"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowTimeFormat" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pengaturan Waktu" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValTimeFormat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Default" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowTimeFormat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Pengaturan Waktu"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValTimeFormat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Default"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowDayStart" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Waktu Mulai Hari" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValDayStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00 AM" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowDayStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Waktu Mulai Hari"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValDayStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00:00AM"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 4: Maintenance -->
+            <!-- Field Group 4 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="0dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <RelativeLayout android:id="@+id/rowReset" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atur Ulang Semuanya" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
-                    </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
+                    <RelativeLayout
+                        android:id="@+id/rowReset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
 
-                    <RelativeLayout android:id="@+id/rowClearCache" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kosongkan Cache" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValCache" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="30.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Atur Ulang Semuanya"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/gray" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowClearCache"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Kosongkan Cache"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValCache"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30.8MB"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 5: App Settings -->
+            <!-- Field Group 5 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="0dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <RelativeLayout android:id="@+id/rowWaterTarget" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Target Air" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValWaterTarget" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25.8MB" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <RelativeLayout
+                        android:id="@+id/rowWaterTarget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Target Air"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValWaterTarget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="25.8MB"
+                                android:textColor="@color/gray"
+                                android:textSize="13sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" />
 
-                    <RelativeLayout android:id="@+id/rowCupVolume" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:clickable="true" android:focusable="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Volume Cup" android:textStyle="bold" android:textColor="@color/black" android:layout_centerVertical="true"/>
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:gravity="center_vertical">
-                            <TextView android:id="@+id/tvValCupVolume" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ml" android:textColor="@color/gray" android:layout_marginEnd="8dp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/gray" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5F5F5" />
+
+                    <RelativeLayout
+                        android:id="@+id/rowCupVolume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Volume Cup"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvValCupVolume"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ml"
+                                android:textColor="@color/gray"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/gray" />
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>

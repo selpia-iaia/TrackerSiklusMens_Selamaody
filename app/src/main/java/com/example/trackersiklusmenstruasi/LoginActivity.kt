@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.tvSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this, SignupActivity::class.java))
             finish()
         }
 
@@ -44,6 +44,20 @@ class LoginActivity : AppCompatActivity() {
             val sessionManager = SessionManager(this)
             sessionManager.setLoggedIn(true)
             sessionManager.setUserId(1) // Default user ID untuk simulasi
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
+        // Tambahkan tombol Google & Apple di Login juga
+        setupSocialLogin()
+    }
+
+    private fun setupSocialLogin() {
+        binding.btnGoogleLogin.setOnClickListener {
+            // Simulasi Login Google
+            val sessionManager = SessionManager(this)
+            sessionManager.setLoggedIn(true)
+            sessionManager.setUserId(1)
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

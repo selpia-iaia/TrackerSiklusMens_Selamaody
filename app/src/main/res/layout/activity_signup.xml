@@ -3,152 +3,146 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/peach_bg">
+    android:background="@color/pink_soft">
 
+    <!-- Peach Header Background -->
+    <View
+        android:id="@+id/peachHeader"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/bg_peach_header"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Circular Back Button -->
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_back_button"
+        android:background="@drawable/bg_circle_white"
+        android:elevation="4dp"
+        android:padding="12dp"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Back" />
-
-    <!-- Card background that starts from the top area and goes to the bottom -->
-    <View
-        android:id="@+id/cardBg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="120dp"
-        android:background="@drawable/bg_card"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:tint="@color/black" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cardBg">
+        app:layout_constraintTop_toBottomOf="@id/btnBack">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Main Sign Up Options Card (Screen 5) -->
+            <LinearLayout
+                android:id="@+id/signupCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Daftar Akun"
-                android:textColor="@color/black"
-                android:textSize="32sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Saatnya mengakses akun Anda."
-                android:textColor="@color/gray"
-                android:textSize="14sp" />
-
-            <!-- Social Buttons -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGoogle"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
                 android:layout_marginTop="32dp"
-                android:text="Lanjutkan dengan Google"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                app:cornerRadius="30dp"
-                app:strokeColor="@color/stroke"
-                app:icon="@drawable/ic_google"
-                app:iconGravity="textStart"
-                app:iconTint="@null" />
+                android:background="@drawable/bg_signup_card"
+                android:elevation="12dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="48dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnApple"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginTop="12dp"
-                android:text="Lanjutkan dengan Apple"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                app:cornerRadius="30dp"
-                app:strokeColor="@color/stroke"
-                app:icon="@drawable/ic_apple"
-                app:iconGravity="textStart"
-                app:iconTint="@null" />
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daftar"
+                    android:textColor="@color/black"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFacebook"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginTop="12dp"
-                android:text="Lanjutkan dengan Facebook"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                app:cornerRadius="30dp"
-                app:strokeColor="@color/stroke"
-                app:icon="@drawable/ic_facebook"
-                app:iconGravity="textStart"
-                app:iconTint="@null" />
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Saatnya mengakses akun Anda."
+                    android:textColor="#9E9E9E"
+                    android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/btnSignup"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/bg_button_pink"
-                android:text="Daftar"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/pink_main" />
+                <!-- Social Buttons -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGoogle"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Lanjutkan dengan Google"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="28dp"
+                    app:icon="@drawable/ic_google"
+                    app:iconGravity="textStart"
+                    app:iconPadding="16dp"
+                    app:iconSize="22dp"
+                    app:iconTint="@null"
+                    app:strokeColor="#E0E0E0"
+                    app:strokeWidth="1dp" />
 
-            <Button
-                android:id="@+id/btnSignin"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_button_white_outline"
-                android:text="Masuk"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                app:backgroundTint="@android:color/white" />
+                <!-- Action Buttons -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGoToRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/pink_main"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Daftar"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="29dp" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGoToLogin"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@android:color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Masuk"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="29dp"
+                    app:strokeColor="#E0E0E0"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+
+            <!-- Bottom Policy Links -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="40dp"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kebijakan Privasi"
-                    android:textColor="@color/gray"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:text="Ketentuan Layanan"
-                    android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                <TextView android:id="@+id/tvPrivacy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Privacy Policy" android:textColor="#9E9E9E" android:textSize="13sp" />
+                <TextView android:id="@+id/tvTerms" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginHorizontal="16dp" android:text="Terms of Service" android:textColor="#9E9E9E" android:textSize="13sp" />
             </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

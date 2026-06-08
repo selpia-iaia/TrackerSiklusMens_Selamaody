@@ -12,7 +12,7 @@ class MoodSelectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMoodSelectionBinding
     private lateinit var adapter: MoodAdapter
-    private val moodList = listOf(
+    private val moodList: List<MoodItem> = listOf(
         MoodItem("Luar Biasa", "🤩"),
         MoodItem("Ceria", "😁"),
         MoodItem("Senang", "😊"),
@@ -41,24 +41,21 @@ class MoodSelectionActivity : AppCompatActivity() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvMoods)
 
-        // Add padding so top and bottom items can be centered
+        // Add large padding so items can be centered
         binding.rvMoods.post {
-            val padding = binding.rvMoods.height / 2 - 50 // 50 is half of item height (100dp)
+            val padding = binding.rvMoods.height / 2 - 60 // 60 is half of item height (120dp)
             binding.rvMoods.setPadding(0, padding, 0, padding)
+            binding.rvMoods.scrollToPosition(3) // Start at "Normal"
         }
 
         binding.rvMoods.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                updateSelectedMood()
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    updateSelectedMood()
+                }
             }
         })
-
-        // Initial selection
-        binding.rvMoods.post {
-            binding.rvMoods.scrollToPosition(3) // Start at "Normal"
-            updateSelectedMood()
-        }
     }
 
     private fun updateSelectedMood() {
@@ -77,11 +74,13 @@ class MoodSelectionActivity : AppCompatActivity() {
 
         for (i in 0 until layoutManager.childCount) {
             val child = layoutManager.getChildAt(i)
-            val childCenter = (layoutManager.getDecoratedTop(child!!) + layoutManager.getDecoratedBottom(child)) / 2
-            val distance = Math.abs(childCenter - center)
-            if (distance < minDistance) {
-                minDistance = distance
-                closestView = child
+            if (child != null) {
+                val childCenter = (layoutManager.getDecoratedTop(child) + layoutManager.getDecoratedBottom(child)) / 2
+                val distance = Math.abs(childCenter - center)
+                if (distance < minDistance) {
+                    minDistance = distance
+                    closestView = child
+                }
             }
         }
         return closestView

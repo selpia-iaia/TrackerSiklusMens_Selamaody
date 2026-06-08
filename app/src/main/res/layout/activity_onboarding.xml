@@ -4,107 +4,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/peach_bg">
+    android:background="@color/pink_soft">
 
+    <!-- Tombol Skip di kanan atas sesuai screenshot -->
     <TextView
         android:id="@+id/btnSkip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:padding="16dp"
-        android:text="Lewati"
-        android:textColor="#808080"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="8dp"
+        android:text="Skip"
+        android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- ViewPager untuk konten onboarding -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomContainer"
+        app:layout_constraintBottom_toTopOf="@id/dotContainer"
+        app:layout_constraintTop_toBottomOf="@id/btnSkip" />
+
+    <!-- Indikator Dots di atas tombol bulat -->
+    <LinearLayout
+        android:id="@+id/dotContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Tombol Lanjutkan berbentuk bulat dengan panah sesuai screenshot 3 layar -->
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_circle_pink"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@android:color/white" />
+
+    <!-- Tombol Back tetap ada ID-nya tapi disembunyikan sesuai screenshot -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/bottomContainer"
-        android:layout_width="match_parent"
+    <!-- tvStepCount dihilangkan karena tidak ada di screenshot -->
+    <TextView
+        android:id="@+id/tvStepCount"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:id="@+id/dotContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="24dp"
-                android:layout_height="4dp"
-                android:background="@drawable/bg_button_pink"
-                android:layout_marginHorizontal="2dp"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="4dp"
-                android:background="#D0D0D0"
-                android:layout_marginHorizontal="2dp"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="4dp"
-                android:background="#D0D0D0"
-                android:layout_marginHorizontal="2dp"/>
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/btnNext"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <!-- Outer Circle -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.1"
-                android:background="@drawable/bg_circle_pink" />
-
-            <!-- Middle Circle -->
-            <View
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                android:alpha="0.25"
-                android:background="@drawable/bg_circle_pink" />
-
-            <!-- Inner Main Circle -->
-            <View
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_circle_pink" />
-
-            <!-- Arrow Icon -->
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_next"
-                app:tint="@color/white" />
-
-        </FrameLayout>
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

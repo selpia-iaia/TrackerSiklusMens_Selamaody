@@ -13,6 +13,16 @@ class SharedPrefManager(context: Context) {
         private const val KEY_IS_LOGGED_IN = "isLoggedIn"
         private const val KEY_USER_ID = "userId"
         private const val KEY_ONBOARDING_FINISHED = "onboardingFinished"
+        private const val KEY_PREFERRED_PAYMENT = "preferredPayment"
+    }
+
+    fun setPreferredPayment(method: String) {
+        editor.putString(KEY_PREFERRED_PAYMENT, method)
+        editor.apply()
+    }
+
+    fun getPreferredPayment(): String {
+        return sharedPreferences.getString(KEY_PREFERRED_PAYMENT, "Google Play Billing") ?: "Google Play Billing"
     }
 
     fun setLoggedIn(isLoggedIn: Boolean) {

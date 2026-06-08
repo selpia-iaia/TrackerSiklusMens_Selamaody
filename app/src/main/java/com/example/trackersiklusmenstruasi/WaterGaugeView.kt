@@ -4,16 +4,15 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 
 class WaterGaugeView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var progress: Float = 0.51f // 1230 / 2400
-    private val blueColor = Color.parseColor("#3DA9FF")
-    private val grayColor = Color.parseColor("#F0F0F0")
+    private var progress: Float = 0.51f 
+    private val blueColor = Color.parseColor("#3B82F6") 
+    private val grayColor = Color.parseColor("#F3F4F6") 
     
     fun setProgress(progress: Float) {
         this.progress = progress.coerceIn(0f, 1f)
@@ -25,8 +24,10 @@ class WaterGaugeView @JvmOverloads constructor(
 
         val centerX = width / 2f
         val centerY = height / 2f
-        val strokeWidth = 45f
-        val radius = (width.coerceAtMost(height) - strokeWidth) / 2f - 40f
+        
+        // Buat jauh lebih besar dan tebal sesuai permintaan "kurang gde"
+        val strokeWidth = 70f 
+        val radius = (width.coerceAtMost(height) - strokeWidth) / 2f - 10f
 
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = strokeWidth
@@ -34,20 +35,20 @@ class WaterGaugeView @JvmOverloads constructor(
 
         val rectF = RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
 
-        // Draw Background Arc (270 degrees)
+        // 1. Draw Background Track (Sangat tebal & warna lembut)
         paint.color = grayColor
         canvas.drawArc(rectF, 135f, 270f, false, paint)
 
-        // Draw Progress Arc
+        // 2. Draw Progress (Warna biru vibran)
         paint.color = blueColor
         canvas.drawArc(rectF, 135f, 270f * progress, false, paint)
         
-        // Draw Ticks inside
-        paint.strokeWidth = 5f
-        paint.color = Color.parseColor("#E0E0E0")
-        val tickCount = 9
-        val tickLength = 15f
-        val tickMargin = 25f
+        // 3. Draw Interior Ticks (Titik-titik halus di dalam)
+        paint.strokeWidth = 3f
+        paint.color = Color.parseColor("#E5E7EB")
+        val tickCount = 13
+        val tickLength = 12f
+        val tickMargin = 40f
         val innerRadius = radius - strokeWidth/2 - tickMargin
         
         for (i in 0 until tickCount) {

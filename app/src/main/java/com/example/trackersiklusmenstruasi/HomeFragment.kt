@@ -5,15 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackersiklusmenstruasi.databinding.FragmentHomeBinding
-import com.example.trackersiklusmenstruasi.PhaseDetailActivity
-import com.example.trackersiklusmenstruasi.EditPeriodActivity
-import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -21,20 +16,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels {
-        HomeViewModelFactory(
-            HealthRepository(ApiService.create()),
-            DatabaseHelper.getInstance(requireContext())
-        )
-    }
-
-    private val adapter by lazy { HealthAdapter() }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,52 +24,64 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        setupCalendarDummy()
         setupClickListeners()
-        observeViewModel()
-
-        viewModel.loadData()
+        setupCalendarDummy()
+        
+        // Setup Progress Siklus (Dummy untuk visualitas)
+        binding.cycleProgress.setProgress(0.65f)
+        binding.tvOvulationDays.text = "3"
+        binding.tvDaysLeft.text = "Tersisa 10 hari lagi"
     }
 
-    private fun setupRecyclerView() {
-        binding.rvHealthTipsHome.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvHealthTipsHome.adapter = adapter
+    override fun onResume() {
+        super.onResume()
+        updateGreeting()
     }
 
-    private fun observeViewModel() {
-        viewModel.userProfile.observe(viewLifecycleOwner) { profile ->
-            profile?.let {
-                updateGreeting(it.name)
-                updateCycleUI(it)
-            }
-        }
+    private fun updateGreeting() {
+        val dbHelper = DatabaseHelper.getInstance(requireContext())
+        val profile = dbHelper.getUserProfile()
+        val name = profile?.name ?: "Sela"
 
-        viewModel.articles.observe(viewLifecycleOwner) { articles ->
-            adapter.submitList(articles)
-        }
-    }
-
-    private fun updateGreeting(name: String) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         
-        val greetingPrefix = when {
-            hour in 0..11 -> "Hi, Selamat Pagi"
-            hour in 12..15 -> "Hi, Selamat Siang"
-            hour in 16..18 -> "Hi, Selamat Sore"
+        val greeting = when (hour) {
+            in 4..10 -> "Hi, Selamat Pagi"
+            in 11..14 -> "Hi, Selamat Siang"
+            in 15..18 -> "Hi, Selamat Sore"
             else -> "Hi, Selamat Malam"
         }
         
-        binding.tvGreeting.text = greetingPrefix
-        binding.tvWelcome.text = "${name.split(" ")[0]} 👋"
+        binding.tvGreeting.text = greeting
+        binding.tvWelcome.text = "$name 👋"
     }
 
-    private fun updateCycleUI(user: UserProfile) {
-        // Logika "Sama Percis" sesuai permintaan gambar
-        binding.cycleProgress.setProgress(0.35f)
-        binding.tvOvulationDays.text = "3"
-        binding.tvDaysLeft.text = "Tersisa 10 hari lagi"
+    private fun setupClickListeners() {
+        binding.btnMenu.setOnClickListener { view ->
+            val popup = PopupMenu(requireContext(), view)
+            popup.menu.add("Tips Kesehatan").setOnMenuItemClickListener {
+                startActivity(Intent(requireContext(), HealthTipsActivity::class.java))
+                true
+            }
+            popup.menu.add("Data Pribadi").setOnMenuItemClickListener {
+                startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
+                true
+            }
+            popup.show()
+        }
+        binding.btnAddPeriod.setOnClickListener {
+            startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
+        }
+        binding.btnAddSymptoms.setOnClickListener {
+            startActivity(Intent(requireContext(), LogEntryActivity::class.java))
+        }
+        binding.cardFeeling.setOnClickListener {
+            startActivity(Intent(requireContext(), MoodSelectionActivity::class.java))
+        }
+        binding.cardGrowth.setOnClickListener {
+            startActivity(Intent(requireContext(), PhaseDetailActivity::class.java))
+        }
     }
 
     private fun setupCalendarDummy() {
@@ -122,49 +116,6 @@ class HomeFragment : Fragment() {
             } else {
                 calendarLayout.getChildAt(i).visibility = View.GONE
             }
-        }
-    }
-
-    private fun setupClickListeners() {
-        binding.btnMenu.setOnClickListener {
-            val popup = android.widget.PopupMenu(requireContext(), it)
-            popup.menu.add("Data Pribadi")
-            popup.menu.add("Pengaturan")
-            popup.menu.add("Tips Kesehatan")
-            popup.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.title) {
-                    "Data Pribadi" -> {
-                        startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
-                        true
-                    }
-                    "Pengaturan" -> {
-                        startActivity(Intent(requireContext(), SettingsActivity::class.java))
-                        true
-                    }
-                    "Tips Kesehatan" -> {
-                        startActivity(Intent(requireContext(), HealthTipsActivity::class.java))
-                        true
-                    }
-                    else -> false
-                }
-            }
-            popup.show()
-        }
-
-        binding.btnAddPeriod.setOnClickListener {
-            startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
-        }
-
-        binding.btnAddSymptoms.setOnClickListener {
-            startActivity(Intent(requireContext(), LogEntryActivity::class.java))
-        }
-
-        binding.cardFeeling.setOnClickListener {
-            startActivity(Intent(requireContext(), MoodSelectionActivity::class.java))
-        }
-
-        binding.cardGrowth.setOnClickListener {
-            startActivity(Intent(requireContext(), PhaseDetailActivity::class.java))
         }
     }
 

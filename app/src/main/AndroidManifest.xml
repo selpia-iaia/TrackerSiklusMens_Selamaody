@@ -2,6 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <queries>
+        <package android:name="com.pede.ovo" />
+        <package android:name="com.gojek.app" />
+        <package android:name="com.gopay.app" />
+        <package android:name="id.dana" />
+        <package android:name="com.google.android.gms" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="ovo" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="gopay" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="dana" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="google" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -34,6 +62,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ProfileSetupActivity" />
+        <activity android:name=".HelpActivity" />
         <activity android:name=".LoadingActivity" />
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".OtpActivity" />
@@ -59,6 +88,7 @@
         <activity android:name=".ReminderAlertActivity" />
         <activity android:name=".AddPayOptionActivity" />
         <activity android:name=".GeneralSettingsActivity" />
+        <activity android:name=".SummaryReportActivity" />
 
     </application>
 

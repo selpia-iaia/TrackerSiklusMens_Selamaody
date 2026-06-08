@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="272dp"
+    android:layout_height="64dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@android:color/transparent">
 
-    <!-- The pill black background centered with fixed width -->
-    <View
-        android:id="@+id/navPillBg"
-        android:layout_width="280dp"
-        android:layout_height="64dp"
-        android:background="@drawable/bg_nav_pill"
+    <!-- Background hitam yang sekarang dijamin sangat rapi & simetris -->
+    <ImageView
+        android:id="@+id/navBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_bottom_nav_wavy"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:baselineAligned="false"
-        app:layout_constraintBottom_toBottomOf="@id/navPillBg"
-        app:layout_constraintEnd_toEndOf="@id/navPillBg"
-        app:layout_constraintStart_toStartOf="@id/navPillBg"
-        app:layout_constraintTop_toTopOf="@id/navPillBg">
+        android:gravity="center">
 
         <!-- Home -->
         <FrameLayout
@@ -34,18 +32,17 @@
             android:layout_weight="1">
             <View
                 android:id="@+id/vNavBgHome"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_gravity="center"
-                android:background="@drawable/bg_circle_pink" />
+                android:background="@drawable/bg_circle_white" />
             <ImageView
                 android:id="@+id/ivNavHome"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_home"
-                app:tint="@color/white"
-                android:contentDescription="Home" />
+                app:tint="@color/black" />
         </FrameLayout>
 
         <!-- Calendar -->
@@ -56,18 +53,17 @@
             android:layout_weight="1">
             <View
                 android:id="@+id/vNavBgCalendar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_circle_white" />
             <ImageView
                 android:id="@+id/ivNavCalendar"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_calendar"
-                app:tint="@color/black"
-                android:contentDescription="Calendar" />
+                app:tint="@color/black" />
         </FrameLayout>
 
         <!-- Stats -->
@@ -78,18 +74,17 @@
             android:layout_weight="1">
             <View
                 android:id="@+id/vNavBgStats"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_circle_white" />
             <ImageView
                 android:id="@+id/ivNavStats"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_stats"
-                app:tint="@color/black"
-                android:contentDescription="Stats" />
+                app:tint="@color/black" />
         </FrameLayout>
 
         <!-- Profile -->
@@ -100,18 +95,17 @@
             android:layout_weight="1">
             <View
                 android:id="@+id/vNavBgProfile"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_circle_white" />
             <ImageView
                 android:id="@+id/ivNavProfile"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_profile"
-                app:tint="@color/black"
-                android:contentDescription="Profile" />
+                android:src="@drawable/ic_user"
+                app:tint="@color/black" />
         </FrameLayout>
 
     </LinearLayout>

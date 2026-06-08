@@ -15,10 +15,19 @@ class ArcRulerView @JvmOverloads constructor(
     private var currentValue: Int = 57
     private val pinkColor = Color.parseColor("#FF5C7A")
     private val blueColor = Color.parseColor("#4285F4")
-    private val softGray = Color.parseColor("#E0E0E0")
+    private val textGray = Color.parseColor("#808080")
+
+    private var minValue = 0
+    private var maxValue = 200
 
     fun setValue(value: Int) {
         currentValue = value
+        invalidate()
+    }
+
+    fun setRange(min: Int, max: Int) {
+        this.minValue = min
+        this.maxValue = max
         invalidate()
     }
 
@@ -26,64 +35,70 @@ class ArcRulerView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         val centerX = width / 2f
-        val centerY = height.toFloat() * 1.8f // Move center further down
-        val topOfArcY = 60f
+        val centerY = height.toFloat() * 1.6f // Push center further down for flatter arc
+        val topOfArcY = 40f
         val radius = centerY - topOfArcY
 
-        // Draw Arc Ruler Lines
-        for (i in (currentValue - 40)..(currentValue + 40)) {
+        val range = 40 // Show more visible ticks
+        for (i in (currentValue - range)..(currentValue + range)) {
+            // Adjust angle spacing to match design spacing
             val angle = 270f + (i - currentValue) * 2.5f
             
-            // Limit drawing range to visible area (left and right sides)
             if (angle < 225f || angle > 315f) continue
+            if (i < minValue || i > maxValue) continue
 
             val radian = Math.toRadians(angle.toDouble())
             
             val startX = centerX + radius * cos(radian).toFloat()
             val startY = centerY + radius * sin(radian).toFloat()
             
-            val isMajor = i % 10 == 0
-            val lineLength = if (isMajor) 50f else 25f
+            val isMajor = i % 10 == 0 || (i == 40 || i == 84 || i == 74) // Match specific labels in image 34
+            val lineLength = if (isMajor) 45f else 25f
             
             val endX = centerX + (radius - lineLength) * cos(radian).toFloat()
             val endY = centerY + (radius - lineLength) * sin(radian).toFloat()
 
-            paint.strokeWidth = if (isMajor) 5f else 3f
+            paint.strokeWidth = if (isMajor) 3f else 1.5f
             
-            // Coloring based on position as in reference screenshot
+            // Subtle color transition like image
             paint.color = when {
-                i < 50 -> blueColor
-                i > 70 -> pinkColor
-                else -> Color.parseColor("#808080") // Gray for middle values
+                i < currentValue - 10 -> blueColor
+                i > currentValue + 10 -> pinkColor
+                else -> textGray
             }
-            if (!isMajor) paint.color = softGray
+            if (!isMajor) paint.alpha = 80
 
             canvas.drawLine(startX, startY, endX, endY, paint)
 
-            // Draw numbers below major lines
             if (isMajor) {
+                paint.alpha = 255
                 paint.color = Color.BLACK
                 paint.textSize = 34f
                 paint.textAlign = Paint.Align.CENTER
                 paint.style = Paint.Style.FILL
                 paint.typeface = Typeface.DEFAULT_BOLD
                 
-                // Position text slightly below the lines
+                // Numbers positioned below the arc ticks
                 val textRadius = radius - lineLength - 35f
                 val textX = centerX + textRadius * cos(radian).toFloat()
                 val textY = centerY + textRadius * sin(radian).toFloat()
-                canvas.drawText(i.toString(), textX, textY, paint)
+                canvas.drawText(i.toString(), textX, textY + 10f, paint)
             }
         }
 
-        // Draw center indicator (Vertical pink line with dots)
+        // Draw Center Indicator Sesuai Gambar
         paint.color = pinkColor
-        paint.strokeWidth = 6f
-        // Line from top to slightly past the arc top
-        canvas.drawLine(centerX, 0f, centerX, topOfArcY + 40f, paint)
+        paint.strokeWidth = 4f
+        
+        // Vertical line with dots
+        val lineStartY = topOfArcY - 30f
+        val lineEndY = topOfArcY + 40f
+        canvas.drawLine(centerX, lineStartY, centerX, lineEndY, paint)
         
         paint.style = Paint.Style.FILL
-        canvas.drawCircle(centerX, 0f, 10f, paint)
-        canvas.drawCircle(centerX, topOfArcY + 40f, 12f, paint)
+        // Small dot at top
+        canvas.drawCircle(centerX, lineStartY, 6f, paint)
+        // Larger circle where it points to the arc
+        canvas.drawCircle(centerX, lineEndY, 8f, paint)
     }
 }

@@ -3,58 +3,165 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_light_pink"
-    android:padding="24dp">
+    android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/ivConfetti"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_success_circle"
-        app:layout_constraintBottom_toTopOf="@id/tvSelamat"
+    <!-- Celebration Graphic Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/celebrationContainer"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_bias="0.3">
+
+        <!-- Yellow Circle Center -->
+        <View
+            android:id="@+id/yellowCircle"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_circle_pink"
+            android:backgroundTint="#FFE699"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Decorative Elements -->
+
+        <!-- Blue curly line top left -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_drop_layered"
+            android:alpha="0.4"
+            android:rotation="-30"
+            app:layout_constraintBottom_toTopOf="@id/yellowCircle"
+            app:layout_constraintEnd_toStartOf="@id/yellowCircle"
+            android:layout_marginBottom="-20dp"
+            android:layout_marginEnd="-10dp" />
+
+        <!-- Pink curly line bottom right -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_drop_layered"
+            android:alpha="0.4"
+            app:tint="#F472B6"
+            android:rotation="150"
+            app:layout_constraintTop_toBottomOf="@id/yellowCircle"
+            app:layout_constraintStart_toEndOf="@id/yellowCircle"
+            android:layout_marginTop="-20dp"
+            android:layout_marginStart="-10dp" />
+
+        <!-- Hearts -->
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_heart"
+            app:tint="#F472B6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="50dp" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_heart"
+            app:tint="#F472B6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="80dp" />
+
+        <!-- Emojis -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="@id/yellowCircle"
+            app:layout_constraintEnd_toStartOf="@id/yellowCircle"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😉"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="@id/yellowCircle"
+            app:layout_constraintStart_toEndOf="@id/yellowCircle"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Confetti Bits -->
+        <View
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/bg_circle_pink"
+            android:backgroundTint="#FB923C"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="70dp" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/bg_circle_pink"
+            android:backgroundTint="#4ADE80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="90dp"
+            android:layout_marginEnd="70dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tvSelamat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Selamat!"
         android:textColor="@color/black"
-        android:textSize="28sp"
+        android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tvDesc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivConfetti" />
+        app:layout_constraintTop_toBottomOf="@id/celebrationContainer" />
 
     <TextView
         android:id="@+id/tvDesc"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="48dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Selamat! Langganan Pro 1 Tahun Telah Diaktifkan."
         android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSelamat" />
 
-    <android.widget.Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDone"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/bg_button_pink"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/pink_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="Selesai"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        app:cornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,10 +44,7 @@ class EditPeriodActivity : AppCompatActivity() {
 
     inner class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
-        private val baseCalendar = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2026)
-            set(Calendar.MONTH, Calendar.MARCH)
-        }
+        private val baseCalendar = Calendar.getInstance()
 
         inner class ViewHolder(val binding: ItemEditCalendarMonthBinding) : RecyclerView.ViewHolder(binding.root)
 

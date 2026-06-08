@@ -2,8 +2,11 @@ package com.example.trackersiklusmenstruasi
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.trackersiklusmenstruasi.databinding.ActivityWaterIntakeBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,8 +28,15 @@ class WaterIntakeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityWaterIntakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.root.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         loadCurrentData()
         updateUI()
@@ -44,10 +54,6 @@ class WaterIntakeActivity : AppCompatActivity() {
             startCupPicker.launch(Intent(this, SwitchCupActivity::class.java))
         }
 
-        binding.btnSettings.setOnClickListener {
-            startCupPicker.launch(Intent(this, SwitchCupActivity::class.java))
-        }
-        
         binding.btnOk.setOnClickListener {
             saveToDatabase()
             finish()
@@ -67,13 +73,14 @@ class WaterIntakeActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
+        // Ensure color is pink_main for current intake as per image 38
         binding.tvCurrentIntake.text = currentIntake.toString()
+        binding.tvCurrentIntake.setTextColor(getColor(R.color.pink_main))
         
-        // Match image 41: Minum(300ml)
         binding.btnDrink.text = "Minum(${selectedCupValue}ml)"
 
         // Format target with comma separator as per image (e.g., 2,400ml)
-        val targetText = String.format("%,d", targetIntake) + "ml"
+        val targetText = String.format(Locale.US, "%,d", targetIntake) + "ml"
         binding.tvTargetIntake.text = targetText
         
         val progress = currentIntake.toFloat() / targetIntake

@@ -27,13 +27,13 @@ class ProfileSetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileSetupBinding
     private val steps = listOf(
-        "Siapa nama Anda?",
-        "Kapan ulang tahun Anda?",
-        "Berapa berat badan Anda?",
-        "Berapa tinggi badan Anda?",
-        "Berapa lama menstruasi Anda?",
-        "Berapa lama siklus Anda?",
-        "Masukkan Tanggal Mulai dan\nTanggal Terakhir Menstruasi Anda?"
+        "Beritahu Kami Nama Anda",
+        "Beritahu Kami\nUlang Tahun Anda",
+        "Beritahu Kami\nBerat Badan Anda",
+        "Beritahu Kami\nTinggi Badan Anda",
+        "Lamanya Haid Anda",
+        "Masukkan Panjang Siklus Anda",
+        "Masukkan Tanggal Mulai dan\nTanggal Terakhir Menstruasi\nAnda?"
     )
 
     // Data to be saved
@@ -109,7 +109,13 @@ class ProfileSetupActivity : AppCompatActivity() {
         val progressContainer = binding.progressContainer
         for (i in 0 until progressContainer.childCount) {
             val dot = progressContainer.getChildAt(i)
-            dot.alpha = if (i == position) 1.0f else 0.1f
+            if (i == position) {
+                dot.alpha = 1.0f
+                dot.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#FF5C7A")) // Pink Main
+            } else {
+                dot.alpha = 0.15f
+                dot.backgroundTintList = null // Use default
+            }
         }
     }
 

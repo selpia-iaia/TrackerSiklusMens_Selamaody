@@ -17,6 +17,9 @@ class TempEntryActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.arcRulerView.setRange(10, 45)
+        binding.arcRulerView.setValue(27)
+
         binding.tempSeekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.tvTempValue.text = "$progress"
@@ -25,9 +28,6 @@ class TempEntryActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
         })
-
-        // Initial state
-        binding.arcRulerView.setValue(27)
 
         binding.btnOk.setOnClickListener {
             finish()

@@ -4,17 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Hiasan Bunga (Sesuai Desain Sebelumnya) -->
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_onboarding_flower"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.5"
-        android:contentDescription="decoration" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardPicker"
         android:layout_width="wrap_content"
@@ -22,24 +11,22 @@
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="24dp"
         app:cardElevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp">
+        app:layout_constraintVertical_bias="0.4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="320dp"
-            android:layout_height="250dp">
+            android:layout_width="300dp"
+            android:layout_height="260dp"
+            android:paddingVertical="16dp">
 
-            <!-- Area Seleksi Tengah (Garis Putus-Putus) -->
             <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_picker_selection"
-                android:layerType="software"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="#05000000"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
@@ -53,29 +40,22 @@
                     android:id="@+id/pickerMonth"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    android:theme="@style/Theme.TrackerSiklusMenstruasi"
-                    android:descendantFocusability="blocksDescendants" />
+                    android:layout_weight="1.2" />
 
                 <NumberPicker
                     android:id="@+id/pickerDay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:theme="@style/Theme.TrackerSiklusMenstruasi"
-                    android:descendantFocusability="blocksDescendants" />
+                    android:layout_weight="0.8" />
 
                 <NumberPicker
                     android:id="@+id/pickerYear"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:theme="@style/Theme.TrackerSiklusMenstruasi"
-                    android:descendantFocusability="blocksDescendants" />
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
-            <!-- Efek Memudar (Gradient Overlay) -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="80dp"

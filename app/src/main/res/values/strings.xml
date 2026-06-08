@@ -3,4 +3,18 @@
     <string name="title_switch_cup">Ganti Cup</string>
     <string name="btn_ok">Ok</string>
     <string name="back">Kembali</string>
+    <string name="signup_title">Daftar</string>
+    <string name="signup_subtitle">Buat akun untuk melanjutkan.</string>
+    <string name="continue_with_google">Lanjutkan dengan Google</string>
+    <string name="or_text">ATAU</string>
+    <string name="email_hint">Masukkan email Anda</string>
+    <string name="continue_with_email">Lanjutkan dengan email</string>
+    <string name="already_have_account">Sudah punya akun? </string>
+    <string name="signin_action">Masuk</string>
+    <string name="forgot_password">Lupa Kata Sandi?</string>
+    <string name="signup_agreement">Dengan mendaftar, Anda menyetujui</string>
+    <string name="privacy_policy"><u>Kebijakan Privasi</u></string>
+    <string name="terms_and_conditions"><u>Syarat &amp; Ketentuan</u></string>
+    <string name="zero">0</string>
+    <string name="default_target">2,400ml</string>
 </resources>

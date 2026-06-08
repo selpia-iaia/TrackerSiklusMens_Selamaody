@@ -1,8 +1,8 @@
 <resources>
     <!-- Primary Colors -->
-    <color name="pink_main">#FF5C7A</color> <!-- Vibrant pink for buttons/icons -->
-    <color name="pink_soft">#FFF0F2</color> <!-- Very soft pink/white for background -->
-    <color name="peach_bg">#FFEBED</color> <!-- Softer peach for header -->
+    <color name="pink_main">#FF5C7A</color> <!-- Vibrant pink -->
+    <color name="pink_soft">#FFF7F8</color> <!-- Very light pink background -->
+    <color name="peach_bg">#FFF0F2</color>
 
     <!-- Neutral Colors -->
     <color name="white">#FFFFFF</color>
@@ -13,9 +13,9 @@
     <!-- Social Colors -->
     <color name="google_blue">#4285F4</color>
 
-    <!-- Custom Dashboard Colors -->
-    <color name="blue_card">#D6E4FF</color>
-    <color name="pink_card">#FFDEE4</color>
+    <!-- Custom Dashboard Colors (Matching images exactly - Final Attempt) -->
+    <color name="blue_card">#CDDFFF</color>
+    <color name="pink_card">#FFD9E2</color>
     <color name="nav_black">#222222</color>
 
     <!-- Premium & Gradient -->

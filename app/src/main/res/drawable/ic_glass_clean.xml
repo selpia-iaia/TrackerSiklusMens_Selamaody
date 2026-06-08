@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Glass Body Outline -->
+    <path
+        android:fillColor="#E1E7FF"
+        android:pathData="M4,2 L20,2 L18,20 C17.8,21.5 16.5,22.5 15,22.5 L9,22.5 C7.5,22.5 6.2,21.5 6,20 Z" />
+
+    <!-- Water Inside -->
+    <path
+        android:fillColor="#4D7FFF"
+        android:pathData="M5,6 L19,6 L17.5,19 C17.4,20 16.5,20.8 15.5,20.8 L8.5,20.8 C7.5,20.8 6.6,20 6.5,19 Z" />
+</vector>

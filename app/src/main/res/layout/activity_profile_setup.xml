@@ -3,26 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/pink_soft">
 
-    <!-- Header Navigation -->
+    <!-- Header Navigation - Precise Alignment -->
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_back_button"
-        android:contentDescription="Back"
+        android:background="@drawable/bg_circle_white"
+        android:elevation="4dp"
+        android:padding="12dp"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
 
     <LinearLayout
         android:id="@+id/progressContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
@@ -30,93 +33,54 @@
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack">
 
-        <View
-            android:id="@+id/step1"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:background="@drawable/bg_button_pink" />
-
-        <View
-            android:id="@+id/step2"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
-
-        <View
-            android:id="@+id/step3"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
-
-        <View
-            android:id="@+id/step4"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
-
-        <View
-            android:id="@+id/step5"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
-
-        <View
-            android:id="@+id/step6"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
-
-        <View
-            android:id="@+id/step7"
-            android:layout_width="16dp"
-            android:layout_height="4dp"
-            android:layout_marginHorizontal="2dp"
-            android:alpha="0.1"
-            android:background="@color/pink_main" />
+        <!-- Pills will be generated in Activity, but here are the templates -->
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:background="@drawable/bg_dot_active" android:backgroundTint="@color/pink_main" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
+        <View android:layout_width="24dp" android:layout_height="6dp" android:layout_marginHorizontal="3dp" android:alpha="0.15" android:background="@drawable/bg_dot_active" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tvStepCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="20dp"
         android:text="1/7"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
 
+    <!-- Content Area -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/btnContinue"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-    <Button
+    <!-- Bottom "lanjutkan" button exactly as screenshot -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/bg_button_pink"
-        android:text="Lanjutkan"
+        android:backgroundTint="@color/pink_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="lanjutkan"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        app:backgroundTint="@color/pink_main"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="28dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

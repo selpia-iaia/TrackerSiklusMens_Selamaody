@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:background="#FDF7F8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -17,31 +18,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="32dp">
 
             <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="28dp">
                 <TextView
+                    android:id="@+id/tvHeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Selamaody"
                     android:textColor="#FF5C7A"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
-                <ImageView
+                <ImageButton
                     android:id="@+id/btnMenuTop"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_menu"
-                    android:padding="8dp"
                     android:background="@drawable/bg_circle_white"
-                    app:tint="@color/black"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:elevation="2dp"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_menu"
+                    app:tint="@color/black" />
             </RelativeLayout>
 
             <!-- Profile Section -->
@@ -51,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,11 +65,11 @@
                     android:background="?attr/selectableItemBackground">
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/ivProfile"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:src="@drawable/ic_profile"
-                        android:scaleType="centerInside"
-                        android:background="#F0F0F0"
+                        android:scaleType="centerCrop"
+                        android:background="#E5E7EB"
                         app:shapeAppearanceOverlay="@style/CircleImage" />
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -80,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:text="Sela.maody"
                             android:textColor="@color/black"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                         <TextView
                             android:id="@+id/tvProfileEmail"
@@ -88,11 +92,11 @@
                             android:layout_height="wrap_content"
                             android:text="sela123@gmail.com"
                             android:textColor="@color/gray"
-                            android:textSize="13sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_edit"
@@ -120,13 +124,13 @@
                         android:layout_height="44dp"
                         android:background="@drawable/bg_circle_white"
                         android:padding="10dp"
-                        android:src="@drawable/ic_scan"
-                        app:tint="#4DB6AC" />
+                        android:src="@drawable/ic_diamond"
+                        app:tint="#60A5FA" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="16dp"
                         android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
@@ -138,6 +142,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:text="Dapatkan semua keuntungan dan buka peluang baru."
                             android:textColor="@color/gray"
                             android:textSize="11sp" />
@@ -174,45 +179,22 @@
             <include layout="@layout/item_settings" android:id="@+id/itemMetodePembayaran" />
             <include layout="@layout/item_settings" android:id="@+id/itemAnalisis" />
 
-            <!-- Keluar -->
-            <LinearLayout
-                android:id="@+id/btnKeluar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_pill_white"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_help"
-                    app:tint="#FF5C7A" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Keluar"
-                    android:textColor="#FF5C7A"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <!-- Keluar Sesuai Gambar -->
+            <include layout="@layout/item_settings" android:id="@+id/itemKeluar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="120dp" />
+                android:layout_height="140dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Navigation -->
+    <!-- Navigation centered as per design -->
     <include
         android:id="@+id/customBottomNav"
         layout="@layout/layout_custom_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="272dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

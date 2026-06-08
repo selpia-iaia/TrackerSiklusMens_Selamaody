@@ -16,8 +16,12 @@
             android:id="@+id/btnBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/bg_circle_white"
+            android:background="@drawable/bg_back_button"
+            android:padding="10dp"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/black" />
 
         <TextView
@@ -36,50 +40,35 @@
         app:layout_constraintBottom_toTopOf="@id/btnLanjut"
         app:layout_constraintTop_toBottomOf="@id/header">
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:columnCount="2"
+            android:padding="12dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <include layout="@layout/item_payment_method" android:id="@+id/payGoogle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-                <include layout="@layout/item_payment_method" android:id="@+id/payPaypal" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-            </LinearLayout>
+            <include layout="@layout/item_payment_method" android:id="@+id/payBCA" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include layout="@layout/item_payment_method" android:id="@+id/payWallet" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include layout="@layout/item_payment_method" android:id="@+id/payGoogle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include layout="@layout/item_payment_method" android:id="@+id/payAdd" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <include layout="@layout/item_payment_method" android:id="@+id/payApple" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-                <include layout="@layout/item_payment_method" android:id="@+id/payMastercard" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <include layout="@layout/item_payment_method" android:id="@+id/payVisa" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-                <include layout="@layout/item_payment_method" android:id="@+id/payAdd" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-            </LinearLayout>
-
-        </LinearLayout>
+        </GridLayout>
     </ScrollView>
 
-    <android.widget.Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLanjut"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="20dp"
-        android:background="@drawable/bg_button_pink"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/pink_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="Lanjut"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        app:cornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

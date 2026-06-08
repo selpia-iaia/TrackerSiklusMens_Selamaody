@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.trackersiklusmenstruasi.databinding.FragmentProfileBinding
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class ProfileFragment : Fragment() {
 
@@ -28,25 +25,118 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        loadUserProfile()
+        setupClickListeners()
+        setupMenuButton()
+    }
+
+    private fun setupMenuButton() {
+        binding.btnMenu.setOnClickListener {
+            val popup = androidx.appcompat.widget.PopupMenu(requireContext(), it)
+            popup.menu.add("Bantuan")
+            popup.setOnMenuItemClickListener { item ->
+                if (item.title == "Bantuan") {
+                    startActivity(Intent(requireContext(), HelpActivity::class.java))
+                }
+                true
+            }
+            popup.show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupProfileInfo()
+        loadProfileImage()
+    }
+
+    private fun loadProfileImage() {
+        try {
+            val file = java.io.File(requireContext().filesDir, "profile_pic_final.jpg")
+            if (file.exists()) {
+                val bitmap = android.graphics.BitmapFactory.decodeFile(file.absolutePath)
+                binding.ivAvatar.setImageBitmap(bitmap)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setupProfileInfo() {
+        val dbHelper = DatabaseHelper.getInstance(requireContext())
+        val profile = dbHelper.getUserProfile()
         
-        binding.tvProfileName.setOnClickListener {
-            startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
+        profile?.let {
+            binding.tvProfileTitle.text = it.name
+            binding.tvName.text = it.name
+            binding.tvEmail.text = "${it.name.lowercase().replace(" ", "")}@gmail.com"
+        }
+        
+        // Setup Settings Items
+        binding.itemSettings.tvTitle.text = "Pengaturan"
+        binding.itemSettings.ivIcon.setImageResource(R.drawable.ic_settings)
+        
+        binding.itemReminder.tvTitle.text = "Peringatan Pengingat"
+        binding.itemReminder.ivIcon.setImageResource(R.drawable.ic_volume_up)
+        
+        binding.itemAccountSecurity.tvTitle.text = "Akun & Keamanan"
+        binding.itemAccountSecurity.ivIcon.setImageResource(R.drawable.ic_lock)
+        
+        binding.itemConnectedAccount.tvTitle.text = "Akun Terhubung"
+        binding.itemConnectedAccount.ivIcon.setImageResource(R.drawable.ic_user)
+        
+        binding.itemPaymentMethod.tvTitle.text = "Metode Pembayaran"
+        binding.itemPaymentMethod.ivIcon.setImageResource(R.drawable.ic_visa)
+        
+        binding.itemDataAnalysis.tvTitle.text = "Data & Analisis"
+        binding.itemDataAnalysis.ivIcon.setImageResource(R.drawable.ic_bar_chart)
+        
+        binding.itemLogout.tvTitle.text = "Keluar"
+        binding.itemLogout.ivIcon.setImageResource(R.drawable.ic_close)
+        binding.itemLogout.tvTitle.setTextColor(android.graphics.Color.RED)
+    }
+
+    private fun setupClickListeners() {
+        // Langsung ke Pengaturan Umum (Bahasa, Satuan, dll)
+        binding.itemSettings.root.setOnClickListener {
+            startActivity(Intent(requireContext(), GeneralSettingsActivity::class.java))
         }
 
-        binding.ivProfilePicture.setOnClickListener {
-            startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
+        binding.itemReminder.root.setOnClickListener {
+            startActivity(Intent(requireContext(), ReminderAlertActivity::class.java))
         }
 
-        binding.btnLogout.setOnClickListener {
-            // Show the logout dialog we created
+        binding.itemAccountSecurity.root.setOnClickListener {
+            startActivity(Intent(requireContext(), AccountSecurityActivity::class.java))
+        }
+
+        binding.itemConnectedAccount.root.setOnClickListener {
+            startActivity(Intent(requireContext(), ConnectedAccountActivity::class.java))
+        }
+
+        binding.itemPaymentMethod.root.setOnClickListener {
+            startActivity(Intent(requireContext(), BillingMethodsActivity::class.java))
+        }
+
+        binding.itemDataAnalysis.root.setOnClickListener {
+            startActivity(Intent(requireContext(), CycleHistoryActivity::class.java))
+        }
+
+        binding.bannerPremium.setOnClickListener {
+            startActivity(Intent(requireContext(), UnlockPremiumActivity::class.java))
+        }
+
+        binding.itemLogout.root.setOnClickListener {
             showLogoutDialog()
+        }
+
+        binding.btnEditProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), PersonalDataActivity::class.java))
         }
     }
 
     private fun showLogoutDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_logout, null)
-        val dialog = android.app.AlertDialog.Builder(requireContext(), R.style.Theme_TrackerSiklusMenstruasi)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
 
@@ -65,37 +155,6 @@ class ProfileFragment : Fragment() {
         }
 
         dialog.show()
-    }
-
-    private fun loadUserProfile() {
-        val dbHelper = DatabaseHelper.getInstance(requireContext())
-        val profile = dbHelper.getUserProfile()
-        
-        profile?.let {
-            binding.tvProfileName.text = it.name
-            binding.tvWeight.text = "${it.weight.toInt()} Kg"
-            binding.tvHeight.text = "${it.height.toInt()} Cm"
-            binding.tvPeriodLen.text = "${it.period_length} Hari"
-            binding.tvCycleLen.text = "${it.cycle_length} Hari"
-            
-            // Calculate age from birthday (yyyy-MM-dd)
-            try {
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val birthDate = sdf.parse(it.birthday)
-                if (birthDate != null) {
-                    val today = Calendar.getInstance()
-                    val birth = Calendar.getInstance()
-                    birth.time = birthDate
-                    var age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR)
-                    if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
-                        age--
-                    }
-                    binding.tvAge.text = age.toString()
-                }
-            } catch (e: Exception) {
-                binding.tvAge.text = "-"
-            }
-        }
     }
 
     override fun onDestroyView() {

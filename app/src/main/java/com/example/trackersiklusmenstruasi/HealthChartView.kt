@@ -15,15 +15,19 @@ class HealthChartView @JvmOverloads constructor(
     private var dataPoints = listOf<Float>()
     private var maxValue = 100f
     private var primaryColor = Color.parseColor("#3DDC84") // Default Green
-    
+    private var highlightIndex = -1
+    private var unit = ""
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val path = Path()
 
-    fun setData(data: List<Float>, max: Float, color: Int, type: ChartType) {
+    fun setData(data: List<Float>, max: Float, color: Int, type: ChartType, highlightIdx: Int = -1, unitStr: String = "") {
         this.dataPoints = data
         this.maxValue = if (max <= 0) 100f else max
         this.primaryColor = color
         this.chartType = type
+        this.highlightIndex = highlightIdx
+        this.unit = unitStr
         invalidate()
     }
 
@@ -33,38 +37,40 @@ class HealthChartView @JvmOverloads constructor(
 
         val w = width.toFloat()
         val h = height.toFloat()
-        val padding = 40f
-        val chartWidth = w - (padding * 2)
-        val chartHeight = h - (padding * 2)
+        val paddingHorizontal = 60f
+        val paddingTop = 100f
+        val paddingBottom = 40f
+        
+        val chartWidth = w - (paddingHorizontal * 2)
+        val chartHeight = h - paddingTop - paddingBottom
         val stepX = chartWidth / (dataPoints.size - 1).coerceAtLeast(1)
+        val baseY = h - paddingBottom
 
         if (chartType == ChartType.BAR) {
-            drawBarChart(canvas, padding, h - padding, chartHeight, stepX)
+            drawBarChart(canvas, paddingHorizontal, baseY, chartHeight, stepX)
         } else {
-            drawLineChart(canvas, padding, h - padding, chartHeight, stepX)
+            drawLineChart(canvas, paddingHorizontal, baseY, chartHeight, stepX)
         }
     }
 
     private fun drawBarChart(canvas: Canvas, startX: Float, baseY: Float, chartHeight: Float, stepX: Float) {
-        val barWidth = stepX * 0.6f
+        val barWidth = stepX * 0.4f
         dataPoints.forEachIndexed { index, value ->
             val barHeight = (value / maxValue) * chartHeight
             val x = startX + (index * stepX)
             
-            // Draw background bar (light)
+            // Draw background full-height bar (very light)
+            paint.style = Paint.Style.FILL
             paint.color = primaryColor
-            paint.alpha = 40
-            canvas.drawRoundRect(x - barWidth/2, baseY - chartHeight, x + barWidth/2, baseY, 12f, 12f, paint)
+            paint.alpha = 20
+            canvas.drawRoundRect(x - barWidth/2, baseY - chartHeight, x + barWidth/2, baseY, 8f, 8f, paint)
             
             // Draw actual value bar
-            paint.alpha = 255
-            canvas.drawRoundRect(x - barWidth/2, baseY - barHeight, x + barWidth/2, baseY, 12f, 12f, paint)
+            paint.alpha = if (index == highlightIndex) 255 else 100
+            canvas.drawRoundRect(x - barWidth/2, baseY - barHeight, x + barWidth/2, baseY, 8f, 8f, paint)
             
-            // Highlight specific bar (e.g., the tallest one in the screenshot)
-            if (value == dataPoints.maxOrNull()) {
-                paint.color = Color.WHITE
-                canvas.drawCircle(x, baseY - barHeight + 10f, 6f, paint)
-                paint.color = primaryColor
+            if (index == highlightIndex) {
+                drawHighlight(canvas, x, baseY - barHeight, value)
             }
         }
     }
@@ -72,7 +78,7 @@ class HealthChartView @JvmOverloads constructor(
     private fun drawLineChart(canvas: Canvas, startX: Float, baseY: Float, chartHeight: Float, stepX: Float) {
         path.reset()
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 6f
+        paint.strokeWidth = 5f
         paint.color = primaryColor
         paint.alpha = 255
 
@@ -83,23 +89,59 @@ class HealthChartView @JvmOverloads constructor(
         }
         canvas.drawPath(path, paint)
 
-        // Draw area under line
-        path.lineTo(startX + (dataPoints.size - 1) * stepX, baseY)
-        path.lineTo(startX, baseY)
-        path.close()
+        // Fill area
+        val fillPath = Path(path)
+        fillPath.lineTo(startX + (dataPoints.size - 1) * stepX, baseY)
+        fillPath.lineTo(startX, baseY)
+        fillPath.close()
         paint.style = Paint.Style.FILL
-        paint.alpha = 30
-        canvas.drawPath(path, paint)
+        paint.alpha = 40
+        canvas.drawPath(fillPath, paint)
         
-        // Draw points
-        paint.alpha = 255
+        // Points
         dataPoints.forEachIndexed { index, value ->
             val x = startX + (index * stepX)
             val y = baseY - (value / maxValue) * chartHeight
-            canvas.drawCircle(x, y, 8f, paint)
-            paint.color = Color.WHITE
-            canvas.drawCircle(x, y, 4f, paint)
+            
+            paint.style = Paint.Style.FILL
+            paint.alpha = 255
             paint.color = primaryColor
+            canvas.drawCircle(x, y, 10f, paint)
+            paint.color = Color.WHITE
+            canvas.drawCircle(x, y, 6f, paint)
+            
+            if (index == highlightIndex) {
+                drawHighlight(canvas, x, y, value)
+            }
         }
+    }
+
+    private fun drawHighlight(canvas: Canvas, x: Float, y: Float, value: Float) {
+        paint.style = Paint.Style.FILL
+        paint.color = Color.BLACK
+        paint.alpha = 255
+        paint.textSize = 36f
+        paint.typeface = Typeface.DEFAULT_BOLD
+        paint.textAlign = Paint.Align.CENTER
+        
+        val text = "${value.toInt()}$unit"
+        val textBounds = Rect()
+        paint.getTextBounds(text, 0, text.length, textBounds)
+        
+        // Draw small dot on the bar/line point
+        paint.color = Color.WHITE
+        canvas.drawCircle(x, y, 6f, paint)
+        
+        // Draw value text above
+        paint.color = Color.BLACK
+        canvas.drawText(text, x, y - 40f, paint)
+        
+        // Draw horizontal dashed line if needed (from screenshot)
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 2f
+        paint.color = Color.LTGRAY
+        paint.pathEffect = DashPathEffect(floatArrayOf(10f, 10f), 0f)
+        canvas.drawLine(0f, y, width.toFloat(), y, paint)
+        paint.pathEffect = null
     }
 }

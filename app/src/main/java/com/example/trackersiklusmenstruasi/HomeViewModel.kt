@@ -1,5 +1,6 @@
 package com.example.trackersiklusmenstruasi
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,23 +34,18 @@ class HomeViewModel(
     private fun fetchArticles() {
         viewModelScope.launch {
             try {
-                // Mengambil data dari Repository (yang menggunakan Retrofit)
+                // Mengambil data dari XAMPP
                 val response = repository.getArticles()
                 
-                // Jika ingin tetap Bahasa Indonesia meskipun API aslinya Inggris, 
-                // kita bisa memetakan data atau menggunakan data mock lokal.
-                // Untuk tugas ini, kita tampilkan hasil API atau mock Indonesia.
-                val displayData = if (response.isNotEmpty()) {
-                    listOf(
-                        HealthArticle(1, "Tips Mengurangi Nyeri", "Kompres hangat sangat membantu otot rileks."),
-                        HealthArticle(2, "Nutrisi Haid", "Perbanyak zat besi dari bayam dan hati ayam."),
-                        HealthArticle(3, "Mood PMS", "Olahraga ringan 15 menit bisa bantu mood stabil.")
-                    )
-                } else response
-                
-                _articles.postValue(displayData)
+                // Langsung tampilkan data dari database XAMPP
+                if (response.isNotEmpty()) {
+                    _articles.postValue(response)
+                } else {
+                    // Jika database kosong, beri pesan atau data default
+                    _articles.postValue(emptyList())
+                }
             } catch (e: Exception) {
-                // Fallback jika API gagal
+                Log.e("HomeViewModel", "Gagal ambil tips: ${e.message}")
                 _articles.postValue(emptyList())
             } finally {
                 _isLoading.postValue(false)

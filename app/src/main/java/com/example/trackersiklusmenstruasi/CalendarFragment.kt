@@ -18,11 +18,8 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
 
     // State for selected date and currently displayed month
-    private var selectedDay = 11
-    private var currentCalendar = Calendar.getInstance().apply {
-        set(Calendar.YEAR, 2026)
-        set(Calendar.MONTH, Calendar.MARCH)
-    }
+    private var selectedDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+    private var currentCalendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +35,14 @@ class CalendarFragment : Fragment() {
         
         displayUserInfo()
         updateCalendarUI()
+        setupMoods()
 
         binding.btnEditPeriod.setOnClickListener {
             startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
         }
 
-        binding.btnSuntingSiklus.setOnClickListener {
-            startActivity(Intent(requireContext(), EditPeriodActivity::class.java))
+        binding.btnWaterIntake.setOnClickListener {
+            startActivity(Intent(requireContext(), WaterIntakeActivity::class.java))
         }
 
         // Navigation between months
@@ -236,6 +234,29 @@ class CalendarFragment : Fragment() {
             }
             
             grid.addView(tv)
+        }
+    }
+
+    private fun setupMoods() {
+        val container = binding.moodContainer
+        container.removeAllViews()
+
+        val moods = listOf(
+            "🙂" to "Normal",
+            "😡" to "Kesal",
+            "😄" to "Senang"
+        )
+
+        for (mood in moods) {
+            val moodView = LayoutInflater.from(requireContext()).inflate(R.layout.item_log_pill, container, false)
+            moodView.findViewById<TextView>(R.id.tvPillEmoji).apply {
+                text = mood.first
+                visibility = View.VISIBLE
+            }
+            moodView.findViewById<View>(R.id.ivPillIcon).visibility = View.GONE
+            moodView.findViewById<TextView>(R.id.tvPillText).text = mood.second
+            moodView.findViewById<View>(R.id.flIconBg).backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFF4E5"))
+            container.addView(moodView)
         }
     }
 

@@ -12,6 +12,14 @@ class SyncRepository(private val apiService: ApiService) {
         return response.success
     }
 
+    suspend fun syncPersonalData(data: PersonalDataModel): Boolean {
+        val response = apiService.savePersonalData(data)
+        if (!response.success) {
+            Log.e("SyncRepository", "Server Error (PersonalData): ${response.message}")
+        }
+        return response.success
+    }
+
     suspend fun syncAppSettings(settings: AppSettingsModel): Boolean {
         val response = apiService.saveAppSettings(settings)
         if (!response.success) {

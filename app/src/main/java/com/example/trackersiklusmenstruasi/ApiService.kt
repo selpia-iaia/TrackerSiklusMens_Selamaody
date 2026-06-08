@@ -10,11 +10,17 @@ interface ApiService {
     @GET("get_health_tips.php")
     suspend fun getHealthArticles(): List<HealthArticle>
 
-    @GET("get_user_profile.php")
+    @GET("get_user_profiles.php")
     suspend fun getUserProfile(@retrofit2.http.Query("user_id") userId: Int): UserProfileModel?
 
-    @POST("save_user_profile.php")
+    @GET("get_personal_data.php")
+    suspend fun getPersonalData(@retrofit2.http.Query("user_id") userId: Int): PersonalDataModel?
+
+    @POST("save_user_profiles.php")
     suspend fun saveUserProfile(@Body profile: UserProfileModel): SimpleResponse
+
+    @POST("save_personal_data.php")
+    suspend fun savePersonalData(@Body data: PersonalDataModel): SimpleResponse
 
     @POST("save_app_settings.php")
     suspend fun saveAppSettings(@Body settings: AppSettingsModel): SimpleResponse
@@ -38,7 +44,9 @@ interface ApiService {
     suspend fun registerUser(@Body user: UserModel): SimpleResponse
 
     companion object {
-        private const val BASE_URL = "http://192.168.1.31/db_menstruasi/"
+        // Gunakan 10.0.2.2 untuk emulator Android mengakses localhost PC (XAMPP)
+        // Gunakan alamat IP asli PC jika menggunakan HP fisik (misal: 192.168.x.x)
+        private const val BASE_URL = "http://10.0.2.2/db_menstruasi/"
 
        fun create(): ApiService {
             val gson = com.google.gson.GsonBuilder()
@@ -61,6 +69,13 @@ data class UserProfileModel(
     val birthday: String,
     val weight: Double,
     val height: Double,
+    val period_length: Int,
+    val cycle_length: Int,
+    val last_period: String
+)
+
+data class PersonalDataModel(
+    val user_id: Int,
     val period_length: Int,
     val cycle_length: Int,
     val last_period: String

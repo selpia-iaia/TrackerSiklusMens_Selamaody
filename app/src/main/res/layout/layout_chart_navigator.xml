@@ -1,32 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:gravity="center"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:id="@+id/btnPrevMonth"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_back"
-        android:padding="4dp" />
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvChartDateRange"
+        android:id="@+id/tvChartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="Maret 10 - Maret 16, 2026"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:text="Berat(kg)"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/btnNextMonth"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_next"
-        android:padding="4dp" />
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/toggleContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pill_gray_light"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvChartTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvChartTitle">
+
+        <ImageButton
+            android:id="@+id/btnBarChart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_button_pink"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_bar_chart"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/btnLineChart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="2dp"
+            android:background="@android:color/transparent"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_line_chart"
+            app:tint="@color/gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateNavigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tvChartTitle">
+
+        <ImageView
+            android:id="@+id/btnPrev"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:id="@+id/tvDateRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:text="Maret 10 - Maret 16, 2026"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btnNext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_next"
+            app:tint="@color/gray" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

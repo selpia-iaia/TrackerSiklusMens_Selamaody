@@ -3,66 +3,76 @@ package com.example.trackersiklusmenstruasi
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackersiklusmenstruasi.databinding.ActivityRegisterBinding
-
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        setupClickListeners()
+    }
 
-        binding.tvSignIn.setOnClickListener {
+    private fun setupClickListeners() {
+        binding.btnBack.setOnClickListener { finish() }
+
+        binding.btnGoToLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
         binding.btnTogglePassword.setOnClickListener {
-            isPasswordVisible = !isPasswordVisible
-            if (isPasswordVisible) {
-                binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            val inputType = if (binding.etPassword.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             } else {
-                binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             }
+            binding.etPassword.inputType = inputType
             binding.etPassword.setSelection(binding.etPassword.text.length)
         }
 
-        binding.btnSignup.setOnClickListener {
-            val username = binding.etFullName.text.toString()
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
+        binding.btnRegister.setOnClickListener {
+            val name = binding.etFullName.text.toString().trim()
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+            val isTermsAccepted = binding.cbTerms.isChecked
 
-            lifecycleScope.launch {
-                try {
-                    val apiService = ApiService.create()
-                    val response = apiService.registerUser(UserModel(username, email, password))
-                    if (response.success) {
-                        // Simpan User ID asli dari server ke SessionManager
-                        response.user_id?.let { id ->
-                            SessionManager(this@RegisterActivity).setUserId(id)
-                        }
-                        startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
-                        finish()
-                    } else {
-                        android.widget.Toast.makeText(this@RegisterActivity, response.message, android.widget.Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: Exception) {
-                    // Jika offline, lanjut dengan ID dummy untuk testing
-                    startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
-                    finish()
-                }
+            if (name.isEmpty()) {
+                binding.etFullName.error = "Nama tidak boleh kosong"
+                return@setOnClickListener
             }
+            if (email.isEmpty()) {
+                binding.etEmail.error = "Email tidak boleh kosong"
+                return@setOnClickListener
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.etEmail.error = "Format email tidak valid"
+                return@setOnClickListener
+            }
+            if (password.length < 6) {
+                binding.etPassword.error = "Password minimal 6 karakter"
+                return@setOnClickListener
+            }
+            if (!isTermsAccepted) {
+                Toast.makeText(this, "Anda harus menyetujui Syarat & Ketentuan", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Simulasi pendaftaran berhasil
+            Toast.makeText(this, "Berhasil mendaftar!", Toast.LENGTH_SHORT).show()
+            
+            val sessionManager = SessionManager(this)
+            sessionManager.setLoggedIn(true)
+            sessionManager.setUserId(1) // Simulasi ID
+            
+            startActivity(Intent(this, ProfileSetupActivity::class.java))
+            finishAffinity() // Clear activity stack
         }
     }
 }
