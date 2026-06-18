@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.trackersiklusmenstruasi.databinding.ActivitySignupBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -12,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.launch
 
 class SignupActivity : AppCompatActivity() {
 
@@ -22,6 +24,21 @@ class SignupActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleGoogleSignInResult(task)
+        } else {
+            // Jika Code: 0, biasanya karena SHA-1 belum terdaftar di Google Cloud/Firebase
+            val errorMessage = if (result.resultCode == 0) {
+                "Login Gagal (Code: 0). \n\nTips: Pastikan SHA-1 PC Anda sudah terdaftar di Google Cloud Console/Firebase."
+            } else {
+                "Login dibatalkan (Code: ${result.resultCode})"
+            }
+            
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Info Google Sign-In")
+                .setMessage(errorMessage)
+                .setPositiveButton("Coba Lagi") { _, _ -> signInWithGoogle() }
+                .setNeutralButton("Lewati (Simulasi)") { _, _ -> proceedLocally() }
+                .setNegativeButton("Batal", null)
+                .show()
         }
     }
 
@@ -74,16 +91,52 @@ class SignupActivity : AppCompatActivity() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             if (account != null) {
-                // Save session
-                val sessionManager = SessionManager(this)
-                sessionManager.setLoggedIn(true)
-                sessionManager.setUserId(1)
+                val email = account.email ?: ""
+                val name = account.displayName ?: "Google User"
                 
-                startActivity(Intent(this, ProfileSetupActivity::class.java))
-                finish()
+                Toast.makeText(this, "Menghubungkan: $email", Toast.LENGTH_SHORT).show()
+
+                lifecycleScope.launch {
+                    try {
+                        val apiService = ApiService.create()
+                        // Daftarkan atau hubungkan akun Google di database
+                        val response = apiService.saveConnectedAccount(
+                            ConnectedAccountModel(
+                                user_id = 1, // Placeholder
+                                provider = "Google",
+                                email = email
+                            )
+                        )
+
+                        if (response.success) {
+                            val sessionManager = SessionManager(this@SignupActivity)
+                            sessionManager.setLoggedIn(true)
+                            sessionManager.setUserId(response.user_id ?: 1)
+
+                            startActivity(Intent(this@SignupActivity, ProfileSetupActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this@SignupActivity, "Server: ${response.message}", Toast.LENGTH_SHORT).show()
+                            // Tetap lanjut jika gagal sync (opsional, sesuaikan kebutuhan)
+                            proceedLocally()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this@SignupActivity, "Error API: ${e.message}", Toast.LENGTH_SHORT).show()
+                        proceedLocally()
+                    }
+                }
             }
         } catch (e: ApiException) {
-            Toast.makeText(this, "Gagal Login Google", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "ApiException (${e.statusCode}): ${e.message}", Toast.LENGTH_LONG).show()
+            android.util.Log.e("SignupActivity", "Google Sign-In failed", e)
         }
+    }
+
+    private fun proceedLocally() {
+        val sessionManager = SessionManager(this)
+        sessionManager.setLoggedIn(true)
+        sessionManager.setUserId(1)
+        startActivity(Intent(this, ProfileSetupActivity::class.java))
+        finish()
     }
 }

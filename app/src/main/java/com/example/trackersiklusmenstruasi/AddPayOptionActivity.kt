@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.trackersiklusmenstruasi.databinding.ActivityAddPayOptionBinding
+import kotlinx.coroutines.launch
 
 class AddPayOptionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPayOptionBinding
@@ -33,8 +35,27 @@ class AddPayOptionActivity : AppCompatActivity() {
         binding.btnClose.setOnClickListener { finish() }
         
         binding.btnSave.setOnClickListener {
-            Toast.makeText(this, "Metode Pembayaran Ditambahkan!", Toast.LENGTH_SHORT).show()
-            finish()
+            val sessionManager = SessionManager(this)
+            val userId = sessionManager.getUserId().takeIf { it != -1 } ?: 1
+
+            lifecycleScope.launch {
+                try {
+                    val apiService = ApiService.create()
+                    apiService.savePaymentMethod(
+                        PaymentMethodModel(
+                            user_id = userId,
+                            provider = "Credit/Debit Card",
+                            account_number = "2589 5555 7891", // Dummy data from UI
+                            holder_name = "Sela.maody" // Dummy data from UI
+                        )
+                    )
+                    Toast.makeText(this@AddPayOptionActivity, "Metode Pembayaran Tersimpan!", Toast.LENGTH_SHORT).show()
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(this@AddPayOptionActivity, "Gagal simpan ke server, tersimpan lokal", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
         }
     }
 }

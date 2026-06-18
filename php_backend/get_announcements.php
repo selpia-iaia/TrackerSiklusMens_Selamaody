@@ -1,19 +1,19 @@
 <?php
-error_reporting(0); // Sembunyikan warning agar tidak merusak JSON
+error_reporting(0);
 include 'db_config.php';
 header('Content-Type: application/json');
 
 try {
-    $sql = "SELECT id, title, content FROM health_tips ORDER BY id DESC";
+    $sql = "SELECT * FROM announcements ORDER BY id DESC";
     $result = $conn->query($sql);
-    $data = [];
+    $announcements = [];
 
-    if ($result) {
+    if ($result && $result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $data[] = $row;
+            $announcements[] = $row;
         }
     }
-    echo json_encode($data);
+    echo json_encode($announcements);
 } catch (Exception $e) {
     echo json_encode([]);
 }

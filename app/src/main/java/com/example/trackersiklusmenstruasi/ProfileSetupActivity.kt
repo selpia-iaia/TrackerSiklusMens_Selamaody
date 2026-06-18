@@ -14,11 +14,13 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.trackersiklusmenstruasi.databinding.ActivityProfileSetupBinding
 import com.example.trackersiklusmenstruasi.databinding.ItemProfileStepBinding
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -96,10 +98,42 @@ class ProfileSetupActivity : AppCompatActivity() {
             lastPeriod
         )
 
+        val sessionManager = SessionManager(this)
+        val userId = sessionManager.getUserId().takeIf { it != -1 } ?: 1
+
+        lifecycleScope.launch {
+            try {
+                val apiService = ApiService.create()
+                apiService.saveUserProfile(UserProfileModel(
+                    user_id = userId,
+                    name = userName,
+                    birthday = birthday,
+                    weight = weight,
+                    height = height,
+                    period_length = periodLength,
+                    cycle_length = cycleLength,
+                    last_period = lastPeriod
+                ))
+            } catch (e: Exception) {}
+        }
+
         lastPeriodStart?.let { start ->
             lastPeriodEnd?.let { end ->
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 dbHelper.savePeriod(sdf.format(start.time), sdf.format(end.time))
+
+                lifecycleScope.launch {
+                    try {
+                        val apiService = ApiService.create()
+                        apiService.savePeriod(
+                            PeriodModel(
+                                user_id = userId,
+                                start_date = sdf.format(start.time),
+                                end_date = sdf.format(end.time)
+                            )
+                        )
+                    } catch (e: Exception) {}
+                }
             }
         }
     }

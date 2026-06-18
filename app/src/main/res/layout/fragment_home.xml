@@ -41,6 +41,18 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnNotification"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_pill_white"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_notification"
+                app:tint="@color/black" />
+
             <ImageButton
                 android:id="@+id/btnMenu"
                 android:layout_width="44dp"
@@ -95,6 +107,7 @@
                 app:layout_constraintTop_toTopOf="@id/cycleProgress">
 
                 <TextView
+                    android:id="@+id/tvCycleStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ovulasi masuk"

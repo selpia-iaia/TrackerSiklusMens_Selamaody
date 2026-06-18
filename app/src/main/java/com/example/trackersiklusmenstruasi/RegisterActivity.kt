@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.trackersiklusmenstruasi.databinding.ActivityRegisterBinding
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -64,15 +66,40 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Simulasi pendaftaran berhasil
-            Toast.makeText(this, "Berhasil mendaftar!", Toast.LENGTH_SHORT).show()
-            
-            val sessionManager = SessionManager(this)
-            sessionManager.setLoggedIn(true)
-            sessionManager.setUserId(1) // Simulasi ID
-            
-            startActivity(Intent(this, ProfileSetupActivity::class.java))
-            finishAffinity() // Clear activity stack
+            // Pendaftaran via API
+            lifecycleScope.launch {
+                try {
+                    val apiService = ApiService.create()
+                    val response = apiService.registerUser(
+                        UserModel(
+                            username = name,
+                            email = email,
+                            password_hash = password // Dalam produksi harus di-hash
+                        )
+                    )
+
+                    if (response.success) {
+                        Toast.makeText(this@RegisterActivity, "Berhasil mendaftar!", Toast.LENGTH_SHORT).show()
+
+                        val sessionManager = SessionManager(this@RegisterActivity)
+                        sessionManager.setLoggedIn(true)
+                        sessionManager.setUserId(response.user_id ?: 1)
+
+                        startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
+                        finishAffinity()
+                    } else {
+                        Toast.makeText(this@RegisterActivity, "Gagal mendaftar: ${response.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    // Fallback untuk simulasi jika API belum siap
+                    Toast.makeText(this@RegisterActivity, "Mode Offline: Berhasil mendaftar!", Toast.LENGTH_SHORT).show()
+                    val sessionManager = SessionManager(this@RegisterActivity)
+                    sessionManager.setLoggedIn(true)
+                    sessionManager.setUserId(1)
+                    startActivity(Intent(this@RegisterActivity, ProfileSetupActivity::class.java))
+                    finishAffinity()
+                }
+            }
         }
     }
 }

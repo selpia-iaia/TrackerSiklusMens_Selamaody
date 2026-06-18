@@ -203,8 +203,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:checked="false"
-                        app:thumbTint="#F3F4F6"
-                        app:trackTint="#D1D5DB" />
+                        app:thumbTint="@color/pink_main"
+                        app:trackTint="#FFD9E2" />
                 </RelativeLayout>
 
             </LinearLayout>

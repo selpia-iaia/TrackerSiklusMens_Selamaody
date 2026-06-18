@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.trackersiklusmenstruasi.databinding.ActivityBillingMethodsBinding
+import kotlinx.coroutines.launch
 
 class BillingMethodsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBillingMethodsBinding
@@ -39,9 +41,9 @@ class BillingMethodsActivity : AppCompatActivity() {
     }
 
     private fun setupSelection() {
-        val methods = listOf("Bank BCA", "E-Wallet (OVO/Gopay/Dana)", "Google Play Billing")
-        val cards = listOf(binding.cardBCA, binding.cardWallet, binding.cardGoogle)
-        val radios = listOf(binding.rbBCA, binding.rbWallet, binding.rbGoogle)
+        val methods = listOf("Dana", "QRIS")
+        val cards = listOf(binding.cardDana, binding.cardQRIS)
+        val radios = listOf(binding.rbDana, binding.rbQRIS)
 
         val currentMethod = sharedPrefManager.getPreferredPayment()
         
@@ -56,110 +58,97 @@ class BillingMethodsActivity : AppCompatActivity() {
             card.setOnClickListener {
                 val selectedName = methods[index]
                 
-                if (selectedName.contains("E-Wallet")) {
-                    showConnectEWalletDialog(index)
-                } else {
-                    selectMethod(index, selectedName)
+                if (selectedName == "Dana") {
+                    showConnectDanaDialog(index)
+                } else if (selectedName == "QRIS") {
+                    showQRISDialog(index)
                 }
             }
         }
     }
 
-    private fun showConnectEWalletDialog(index: Int) {
-        val options = arrayOf("OVO", "GoPay", "Dana", "QRIS (Tampilkan Kode)")
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Hubungkan Pembayaran")
-            .setItems(options) { _, which ->
-                val selected = options[which]
-                if (selected.contains("QRIS")) {
-                    showQRISDialog(index)
-                } else {
-                    connectEWallet(index, selected)
-                }
-            }
-            .setNegativeButton("Batal", null)
-            .show()
-    }
-
-    private fun connectEWallet(index: Int, provider: String) {
+    private fun showConnectDanaDialog(index: Int) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_connect_ewallet, null)
         val tvTitle = dialogView.findViewById<android.widget.TextView>(R.id.tvTitle)
-        tvTitle.text = "Hubungkan $provider"
+        tvTitle.text = "Hubungkan DANA"
 
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setView(dialogView)
             .setPositiveButton("Hubungkan") { _, _ ->
                 val phone = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etPhone).text.toString()
                 if (phone.isNotEmpty()) {
-                    val methodName = "E-Wallet ($provider)"
-                    selectMethod(index, methodName)
-                    
-                    // Open the actual app for authentication
-                    openEWalletApp(provider)
-                    
-                    showToast("$provider Berhasil Terhubung!")
+                    selectMethod(index, "Dana")
+                    openDanaApp()
+                    showToast("DANA Berhasil Terhubung!")
                 }
             }
             .setNegativeButton("Batal", null)
             .show()
     }
 
-    private fun openEWalletApp(provider: String) {
-        val packageName = when (provider) {
-            "OVO" -> "com.pede.ovo"
-            "GoPay" -> "com.gopay.app"
-            "Dana" -> "id.dana"
-            else -> null
-        }
-        
-        if (packageName != null) {
-            val intent = packageManager.getLaunchIntentForPackage(packageName)
-            if (intent != null) {
-                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            } else {
-                // Fallback for GoPay specifically since it's sometimes inside Gojek
-                if (provider == "GoPay") {
-                    val gojekIntent = packageManager.getLaunchIntentForPackage("com.gojek.app")
-                    if (gojekIntent != null) {
-                        startActivity(gojekIntent)
-                        return
-                    }
-                }
-                
-                // If not found, show info
-                showToast("Aplikasi $provider tidak ditemukan di perangkat ini.")
-                try {
-                    startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, 
-                        android.net.Uri.parse("market://details?id=$packageName")))
-                } catch (e: Exception) {}
-            }
+    private fun openDanaApp() {
+        val packageName = "id.dana"
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        } else {
+            showToast("Aplikasi DANA tidak ditemukan.")
+            try {
+                startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, 
+                    android.net.Uri.parse("market://details?id=$packageName")))
+            } catch (e: Exception) {}
         }
     }
 
     private fun showQRISDialog(index: Int) {
         val imageView = android.widget.ImageView(this)
-        imageView.setImageResource(R.drawable.ic_scan) // Menggunakan ic_scan sebagai placeholder QRIS
-        imageView.setPadding(100, 100, 100, 100)
+        imageView.setImageResource(R.drawable.qris_code)
+        imageView.setAdjustViewBounds(true)
+        imageView.setPadding(32, 32, 32, 32)
         
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Pembayaran QRIS")
-            .setMessage("Scan kode di bawah ini untuk menghubungkan pembayaran")
+            .setMessage("Silakan simpan atau scan kode QRIS di bawah ini untuk menghubungkan pembayaran")
             .setView(imageView)
             .setPositiveButton("Selesai") { _, _ ->
-                selectMethod(index, "E-Wallet (QRIS)")
+                selectMethod(index, "QRIS")
                 showToast("QRIS Terdeteksi & Terhubung!")
             }
+            .setNegativeButton("Batal", null)
             .show()
     }
 
     private fun selectMethod(index: Int, name: String) {
-        val radios = listOf(binding.rbBCA, binding.rbWallet, binding.rbGoogle)
+        val radios = listOf(binding.rbDana, binding.rbQRIS)
         radios.forEach { it.isChecked = false }
         radios[index].isChecked = true
         
         sharedPrefManager.setPreferredPayment(name)
-        showToast("Metode Utama: $name")
+        
+        // Simpan ke database via API
+        val userId = sharedPrefManager.getUserId().takeIf { it != -1 } ?: 1
+        lifecycleScope.launch {
+            try {
+                val apiService = ApiService.create()
+                val response = apiService.savePaymentMethod(
+                    PaymentMethodModel(
+                        user_id = userId,
+                        provider = name,
+                        account_number = "Linked Account",
+                        holder_name = "User Account"
+                    )
+                )
+                
+                if (response.success) {
+                    showToast("Metode Utama: $name (Tersimpan di Cloud)")
+                } else {
+                    showToast("Metode Utama: $name (Gagal Sinkron)")
+                }
+            } catch (e: Exception) {
+                showToast("Metode Utama: $name (Lokal)")
+            }
+        }
     }
 
     private fun showToast(message: String) {

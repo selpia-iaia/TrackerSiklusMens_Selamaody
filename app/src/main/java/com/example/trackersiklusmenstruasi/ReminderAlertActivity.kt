@@ -1,6 +1,10 @@
 package com.example.trackersiklusmenstruasi
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -20,6 +24,8 @@ class ReminderAlertActivity : AppCompatActivity() {
     private lateinit var binding: ActivityReminderAlertBinding
     private lateinit var audioManager: AudioManager
     private var mediaPlayer: MediaPlayer? = null
+    private var selectedHour = 2
+    private var selectedMinute = 0
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +64,31 @@ class ReminderAlertActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { finish() }
         
         binding.switchDailyReminder.setOnCheckedChangeListener { _, isChecked ->
-            showToast("Pengingat Harian: ${if(isChecked) "Aktif" else "Nonaktif"}")
+            if (isChecked) {
+                scheduleReminder()
+                showToast("Pengingat Harian Aktif")
+            } else {
+                cancelReminder()
+                showToast("Pengingat Harian Nonaktif")
+            }
         }
         
         binding.rowSchedule.setOnClickListener {
             val calendar = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                selectedHour = hour
+                selectedMinute = minute
                 val amPm = if (hour < 12) "AM" else "PM"
                 val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
                 val timeFormat = String.format(Locale.getDefault(), "%02d:%02d%s", displayHour, minute, amPm)
                 binding.tvReminderTime.text = timeFormat
+                
+                if (binding.switchDailyReminder.isChecked) {
+                    scheduleReminder()
+                }
                 showToast("Jadwal diatur ke $timeFormat")
             }
-            TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+            TimePickerDialog(this, timeSetListener, selectedHour, selectedMinute, false).show()
         }
         
         binding.rowRingtone.setOnClickListener {
@@ -100,22 +118,61 @@ class ReminderAlertActivity : AppCompatActivity() {
         })
         
         binding.switchVibrate.setOnCheckedChangeListener { _, isChecked ->
+            val prefs = getSharedPreferences("reminder_prefs", Context.MODE_PRIVATE)
+            prefs.edit().putBoolean("vibrate", isChecked).apply()
             showToast("Mode Getar: ${if(isChecked) "Aktif" else "Nonaktif"}")
         }
     }
 
+    private fun scheduleReminder() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, ReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, 1001, intent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, selectedHour)
+            set(Calendar.MINUTE, selectedMinute)
+            set(Calendar.SECOND, 0)
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DATE, 1)
+            }
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+    }
+
+    private fun cancelReminder() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, ReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, 1001, intent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.cancel(pendingIntent)
+    }
+
     private fun playPreviewSound() {
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)
+        if (currentVolume <= 0) return // Jangan bersuara jika volume nol
+
         try {
-            // Releasing previous media player
             mediaPlayer?.release()
             
-            // Using default notification sound for preview
             val notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            mediaPlayer = MediaPlayer.create(this, notificationUri)
-            mediaPlayer?.start()
-            
-            // Auto release after sound finished
-            mediaPlayer?.setOnCompletionListener { it.release() }
+            mediaPlayer = MediaPlayer().apply {
+                setDataSource(this@ReminderAlertActivity, notificationUri)
+                setAudioStreamType(AudioManager.STREAM_NOTIFICATION) // Ikuti volume notifikasi
+                prepare()
+                start()
+                setOnCompletionListener { release() }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

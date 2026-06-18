@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.trackersiklusmenstruasi.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupCustomNavigation()
-
+        
         // Load default fragment
         val target = intent.getStringExtra("TARGET_FRAGMENT")
         when (target) {
@@ -112,5 +114,57 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    private fun checkAnnouncements() {
+        lifecycleScope.launch {
+            try {
+                // Beri waktu lebih lama (5 detik) agar internet HP benar-benar siap
+                kotlinx.coroutines.delay(5000)
+                
+                // Pesan tanda mulai (Toast 1)
+                android.widget.Toast.makeText(this@MainActivity, "Sedang mengambil pengumuman terbaru...", android.widget.Toast.LENGTH_SHORT).show()
+                
+                val apiService = ApiService.create()
+                val announcements = apiService.getAnnouncements()
+                
+                if (announcements.isNotEmpty()) {
+                    val latest = announcements[0]
+                    
+                    // Pesan tanda data ada (Toast 2)
+                    android.widget.Toast.makeText(this@MainActivity, "Menampilkan Pop-up: ${latest.title}", android.widget.Toast.LENGTH_SHORT).show()
+                    
+                    val dbHelper = DatabaseHelper.getInstance(this@MainActivity)
+                    val userName = dbHelper.getUserProfile()?.name ?: "User"
+                    val fTitle = latest.title.replace("{name}", userName, ignoreCase = true)
+                    val fMsg = latest.message.replace("{name}", userName, ignoreCase = true)
+                    
+                    runOnUiThread {
+                        val dialog = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                            .setTitle("📢 $fTitle")
+                            .setMessage(fMsg)
+                            .setPositiveButton("Selesai", null)
+                            .create()
+                        
+                        // Tambahkan ini agar dialog muncul di paling depan
+                        dialog.window?.setType(android.view.WindowManager.LayoutParams.TYPE_APPLICATION_PANEL)
+                        dialog.show()
+                    }
+                } else {
+                    android.widget.Toast.makeText(this@MainActivity, "Database Pengumuman Kosong.", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                // Tampilkan error jika gagal konek
+                android.widget.Toast.makeText(this@MainActivity, "Pop-up Error: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun showAnnouncementDialog(title: String, message: String) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("📢 $title")
+            .setMessage(message)
+            .setPositiveButton("Tutup", null)
+            .show()
     }
 }

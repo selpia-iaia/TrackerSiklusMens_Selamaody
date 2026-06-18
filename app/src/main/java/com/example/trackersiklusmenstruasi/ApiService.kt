@@ -10,13 +10,13 @@ interface ApiService {
     @GET("get_health_tips.php")
     suspend fun getHealthArticles(): List<HealthArticle>
 
-    @GET("get_user_profiles.php")
+    @GET("get_user_profile.php")
     suspend fun getUserProfile(@retrofit2.http.Query("user_id") userId: Int): UserProfileModel?
 
     @GET("get_personal_data.php")
     suspend fun getPersonalData(@retrofit2.http.Query("user_id") userId: Int): PersonalDataModel?
 
-    @POST("save_user_profiles.php")
+    @POST("save_user_profile.php")
     suspend fun saveUserProfile(@Body profile: UserProfileModel): SimpleResponse
 
     @POST("save_personal_data.php")
@@ -43,10 +43,12 @@ interface ApiService {
     @POST("register_user.php")
     suspend fun registerUser(@Body user: UserModel): SimpleResponse
 
+    @GET("get_announcements.php")
+    suspend fun getAnnouncements(): List<AnnouncementModel>
+
     companion object {
-        // Gunakan 10.0.2.2 untuk emulator Android mengakses localhost PC (XAMPP)
-        // Gunakan alamat IP asli PC jika menggunakan HP fisik (misal: 192.168.x.x)
-        private const val BASE_URL = "http://10.0.2.2/db_menstruasi/"
+        private const val PC_IP = "172.20.10.13"
+        private const val BASE_URL = "http://$PC_IP/db_menstruasi/"
 
        fun create(): ApiService {
             val gson = com.google.gson.GsonBuilder()
@@ -139,4 +141,11 @@ data class SimpleResponse(
     val success: Boolean,
     val message: String,
     val user_id: Int? = null
+)
+
+data class AnnouncementModel(
+    val id: Int,
+    val title: String,
+    val message: String,
+    val created_at: String? = null
 )
